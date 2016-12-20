@@ -1,3 +1,3 @@
-import { lib } from 'js-transformabit';
+import { JsNode } from 'js-transformabit';
 
-console.log(lib);
+console.log(JsNode.fromModuleCode('let foo;').format());
