@@ -4,10 +4,15 @@
   "description": "A sandbox for js-transformabit transformations.",
   "scripts": {
     "build": "tsc",
+    "test": "jest",
+    "test-watch": "jest --watch",
     "demo": "node ./dist/DemoPrinter.js",
     "demo-watch": "nodemon -e js ./dist/DemoPrinter.js"
   },
   "devDependencies": {
+    "@types/jest": "^16.0.2",
+    "@types/node": "^6.0.52",
+    "jest": "^18.0.0",
     "nodemon": "^1.11.0",
     "typescript": "^2.1.4"
   }
