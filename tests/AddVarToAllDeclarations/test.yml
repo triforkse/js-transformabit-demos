@@ -1,0 +1,6 @@
+plain_declarations:
+    input: "bad_variable_declarations.js"
+    output: "good_declarations.js"
+    params:
+        - false # use let instead
+        - false # use const if not reassigned

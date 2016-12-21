@@ -2,6 +2,9 @@ import * as path from 'path';
 import { TestSuiteRunner } from 'js-transformabit';
 import { BindWebSocket } from './BindWebSocket';
 import { CreateClassToComponent } from './CreateClassToComponent';
+import { AddVarToAllDeclarations } from './AddVarToAllDeclarations';
+import { PropTypeTemplate } from './PropTypeTemplate'
+import { Truthinator } from './Truthinator';
 import { RenameVariable } from './RenameVariable';
 
 describe('TestSuiteRunner', () => {
@@ -12,7 +15,10 @@ describe('TestSuiteRunner', () => {
       [
         BindWebSocket,
         CreateClassToComponent,
-        RenameVariable
+        RenameVariable,
+        Truthinator,
+        PropTypeTemplate,
+        AddVarToAllDeclarations
       ]
     );
     runner.run();
