@@ -1,13 +1,13 @@
 {
-    "compileOnSave": true,
-    "compilerOptions": {
-        "outDir": "./dist/",
-        "target": "es5",
-        "jsx": "react",
-        "experimentalDecorators": true,
-        "reactNamespace": "JsCode"
-    },
-    "include": [
-        "src/**/*"
-    ]
+  "compileOnSave": true,
+  "compilerOptions": {
+    "outDir": "./dist/",
+    "target": "es5",
+    "jsx": "react",
+    "experimentalDecorators": true,
+    "reactNamespace": "JsCode"
+  },
+  "include": [
+    "src/**/*"
+  ]
 }

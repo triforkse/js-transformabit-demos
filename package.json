@@ -4,9 +4,11 @@
   "description": "A sandbox for js-transformabit transformations.",
   "scripts": {
     "build": "tsc",
-    "start": "node ./dist/test.js"
+    "demo": "node ./dist/DemoPrinter.js",
+    "demo-watch": "nodemon -e js ./dist/DemoPrinter.js"
   },
   "devDependencies": {
+    "nodemon": "^1.11.0",
     "typescript": "^2.1.4"
   }
 }
