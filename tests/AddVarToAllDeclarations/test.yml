@@ -4,3 +4,31 @@ plain_declarations:
     params:
         - false # use let instead
         - false # use const if not reassigned
+
+plain_declarations_with_let:
+    input: "bad_variable_declarations.js"
+    output: "good_declarations_with_let.js"
+    params:
+        - true # use let instead
+        - false # use const if not reassigned
+
+sub_functions:
+    input: "bad_var_decs_nested_funcs.js"
+    output: "good_var_decs_nested_funcs.js"
+    params:
+        - false # use let instead
+        - false # use const if not reassigned
+
+with_let_and_const:
+    input: "bad_variable_declarations.js"
+    output: "with_let_and_const.js"
+    params:
+        - true # use let instead
+        - true # use const if not reassigned
+
+nested_with_const:
+    input: "bad_var_decs_nested_funcs.js"
+    output: "nested_funcs_with_consts.js"
+    params:
+        - false # use let instead
+        - true # use const if not reassigned

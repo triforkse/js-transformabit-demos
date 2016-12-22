@@ -11,13 +11,19 @@ import {
   VariableDeclaration,
   VariableDeclarator,
   FunctionDeclaration,
-  Identifier
+  BlockStatement,
+  Identifier,
+  Position,
 } from 'js-transformabit';
 
 export class AddVarToAllDeclarations implements Transformation {
 
-    configure(args: any[]): void {
+    useLet: boolean
+    useConst: boolean
 
+    configure(args: any[]): void {
+        this.useLet = args[0] as boolean;
+        this.useConst = args[1] as boolean;
     }
 
     check(root: GenericJsNode, project: Project): boolean {
@@ -61,6 +67,13 @@ export class AddVarToAllDeclarations implements Transformation {
     }
 
     private earliestExpressionEncounter(root: GenericJsNode, name: string): number {
+        const parent = root.findClosestParentOfType(FunctionDeclaration);
+        if (parent != null) {
+            const parentEarliest = this.earliestExpressionEncounter(parent, name);
+            if (parentEarliest !== -1) {
+                return parentEarliest;
+            }
+        } 
         let first: number = null;
         this.findExpressionStatements(root).forEach(expression => {
             const left = ((expression.children().at(0) as AssignmentExpression).children().at(0) as Identifier).name;
@@ -74,6 +87,14 @@ export class AddVarToAllDeclarations implements Transformation {
     }
 
     private earliestDeclarationEncounter(root: GenericJsNode, name: string): number {
+
+        const parent = root.findClosestParentOfType(FunctionDeclaration);
+        if (parent != null) {
+            const parentEarliest = this.earliestDeclarationEncounter(parent, name);
+            if (parentEarliest !== -1) {
+                return parentEarliest;
+            }
+        }
         const decs = root.findChildrenOfType(VariableDeclaration).filter(variableDec => {
             const declarators = variableDec.declarations().filter(dec => {
                 const declarator = (dec as VariableDeclarator);
@@ -94,12 +115,40 @@ export class AddVarToAllDeclarations implements Transformation {
             const left = (assignment.children().at(0) as Identifier).name;
             const right = (assignment.children().last() as GenericJsNode);
             let variableDeclaration = (
-                <VariableDeclaration name={left} kind="var">
+                <VariableDeclaration name={left} kind={this.getKind(expression, left)}>
                     {right}
                 </VariableDeclaration>
             );
+            variableDeclaration.node.loc = {
+                start: {
+                    line: expression.node.loc.start.line, 
+                    column: expression.node.loc.start.column
+                },
+                end: {
+                    line: expression.node.loc.start.line,
+                    column: expression.node.loc.start.column + variableDeclaration.format().length
+                }
+            };
+            
+            ;
             expression.replace(variableDeclaration);
         });
+    }
+
+    private getKind(expression: ExpressionStatement, name: string): "var" | "let" | "const" {
+        if (this.useConst) {
+            const parent = expression.findClosestParentOfType(BlockStatement);
+            const assigns = parent.findChildrenOfType(AssignmentExpression).filter(assignmentExpression => {
+                return (assignmentExpression.children().at(0) as Identifier).name === name;
+            }).size();
+            if (assigns === 1) {
+                return "const";
+            }
+        }
+        if (this.useLet) {
+            return "let";
+        }
+        return "var";
     }
 
 
