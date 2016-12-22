@@ -1,4 +1,3 @@
-
 import {
   GenericJsNode,
   JsNodeList,
@@ -12,8 +11,7 @@ import {
   VariableDeclarator,
   FunctionDeclaration,
   BlockStatement,
-  Identifier,
-  Position,
+  Identifier
 } from 'js-transformabit';
 
 export class AddVarToAllDeclarations implements Transformation {
@@ -34,7 +32,7 @@ export class AddVarToAllDeclarations implements Transformation {
         return root.findChildrenOfType(ExpressionStatement).filter(expression => {
             if (expression.children().at(0).check(AssignmentExpression)) {
                 const assignment = expression.children().at(0) as AssignmentExpression;
-                return assignment.node.operator === "=";
+                return assignment.operator === "=";
             }
             return false;
         });
@@ -54,7 +52,7 @@ export class AddVarToAllDeclarations implements Transformation {
 
     private isEarliestEncounter(root: GenericJsNode, exp: ExpressionStatement): boolean {
         let name = ((exp.children().at(0) as AssignmentExpression).children().at(0) as Identifier).name;
-        let start = exp.node.loc.start.line;
+        let start = exp.sourceLocation.start.line;
         let firstExpression: number = this.earliestExpressionEncounter(root, name);
         let firstDeclaration: number = this.earliestDeclarationEncounter(root, name);
         if (firstDeclaration === -1) {
@@ -78,8 +76,8 @@ export class AddVarToAllDeclarations implements Transformation {
         this.findExpressionStatements(root).forEach(expression => {
             const left = ((expression.children().at(0) as AssignmentExpression).children().at(0) as Identifier).name;
             if (name === left) {
-                if (first === null || first > expression.node.loc.start.line) {
-                    first = expression.node.loc.start.line;
+                if (first === null || first > expression.sourceLocation.start.line) {
+                    first = expression.sourceLocation.start.line;
                 }
             }
         });
@@ -87,7 +85,6 @@ export class AddVarToAllDeclarations implements Transformation {
     }
 
     private earliestDeclarationEncounter(root: GenericJsNode, name: string): number {
-
         const parent = root.findClosestParentOfType(FunctionDeclaration);
         if (parent != null) {
             const parentEarliest = this.earliestDeclarationEncounter(parent, name);
@@ -105,7 +102,7 @@ export class AddVarToAllDeclarations implements Transformation {
         if (decs.size() === 0) {
             return -1;
         } else {
-            return decs.first().node.loc.start.line;
+            return decs.first().sourceLocation.start.line;
         }
     }
 
@@ -119,18 +116,16 @@ export class AddVarToAllDeclarations implements Transformation {
                     {right}
                 </VariableDeclaration>
             );
-            variableDeclaration.node.loc = {
+            variableDeclaration.sourceLocation = {
                 start: {
-                    line: expression.node.loc.start.line, 
-                    column: expression.node.loc.start.column
+                    line: expression.sourceLocation.start.line, 
+                    column: expression.sourceLocation.start.column
                 },
                 end: {
-                    line: expression.node.loc.start.line,
-                    column: expression.node.loc.start.column + variableDeclaration.format().length
+                    line: expression.sourceLocation.start.line,
+                    column: expression.sourceLocation.start.column + variableDeclaration.format().length
                 }
             };
-            
-            ;
             expression.replace(variableDeclaration);
         });
     }
@@ -150,6 +145,4 @@ export class AddVarToAllDeclarations implements Transformation {
         }
         return "var";
     }
-
-
 }

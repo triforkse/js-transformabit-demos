@@ -11,7 +11,6 @@ import {
 export class Truthinator implements Transformation {
 
   configure(args: any[]): void {
-
   }
 
   check(root: GenericJsNode, project: Project): boolean {
@@ -20,8 +19,8 @@ export class Truthinator implements Transformation {
 
   apply(root: GenericJsNode, project: Project): GenericJsNode {
     root.findChildrenOfType(BinaryExpression).forEach(binaryExpression => {
-      if (this.isDangerousOperator(binaryExpression.node.operator)) {
-        binaryExpression.node.operator = this.asSafeOperator(binaryExpression.node.operator) as BinaryOperator;
+      if (this.isDangerousOperator(binaryExpression.operator)) {
+        binaryExpression.operator = this.asSafeOperator(binaryExpression.operator);
       }
     })
     return root;
@@ -31,13 +30,11 @@ export class Truthinator implements Transformation {
     return (operator === "==" || operator === "!=");
   }
 
-  private asSafeOperator(operator: string): string {
+  private asSafeOperator(operator: BinaryOperator): BinaryOperator {
     switch (operator) {
       case "==" : return "===";
       case "!=" : return "!==";
       default: return operator;
     }
   }
-
-
 }
