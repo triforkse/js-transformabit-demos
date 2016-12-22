@@ -9,9 +9,6 @@ export class RenameVariable implements Transformation {
   oldName: string;
   newName: string;
 
-  constructor() {
-  }
-
   configure(args: any[]): void {
     this.oldName = args[0];
     this.newName = args[1];
