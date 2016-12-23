@@ -1,7 +1,6 @@
 import {
   GenericJsNode,
   JsNodeList,
-  Project,
   Transformation,
   JsCode,
   ReactClassComponent,
@@ -19,7 +18,7 @@ export class PropTypeTemplate implements Transformation {
   configure(args: any[]): void {
   }
 
-  check(root: GenericJsNode, project: Project): boolean {
+  check(root: GenericJsNode, project: any): boolean {
     return root.findChildrenOfType(ReactClassComponent).filter(component => {
       return component.findChildrenOfType(MemberExpression).filter(memberExpression => {
         return memberExpression.object().format() === "this.props";
@@ -34,7 +33,7 @@ export class PropTypeTemplate implements Transformation {
     return null;
   }
 
-  apply(root: GenericJsNode, project: Project): GenericJsNode {
+  apply(root: GenericJsNode, project: any): GenericJsNode {
     root.findChildrenOfType(ReactClassComponent).forEach(component => {
       let props = new Array<Property>();
       component.findChildrenOfType(MemberExpression).forEach(memberExpression => {

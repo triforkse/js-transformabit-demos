@@ -1,6 +1,5 @@
 import {
   GenericJsNode,
-  Project,
   Transformation,
   JsCode,
   MethodDefinition,
@@ -23,7 +22,7 @@ export class BindWebSocket implements Transformation {
     this.address = args[1];
   }
 
-  check(root: GenericJsNode, project: Project): boolean {
+  check(root: GenericJsNode, project: any): boolean {
     return this.getMatchingReactComponents(root).size() > 0;
   }
 
@@ -32,7 +31,7 @@ export class BindWebSocket implements Transformation {
       .filter(k => k.id().name === this.component && ReactClassComponent.check(k));
   }
 
-  apply(root: GenericJsNode, project: Project): GenericJsNode {
+  apply(root: GenericJsNode, project: any): GenericJsNode {
     const component = this.getMatchingReactComponents(root).first();
     let ctor = component.findConstructor();
     if (!ctor) {

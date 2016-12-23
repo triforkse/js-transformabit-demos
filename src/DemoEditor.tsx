@@ -1,6 +1,5 @@
 import {
   GenericJsNode,
-  Project,
   Transformation,
   JsCode,
   ReactComponent,
@@ -14,11 +13,11 @@ export class DemoEditor implements Transformation {
   configure(args: any[]): void {
   }
 
-  check(root: GenericJsNode, project: Project): boolean {
+  check(root: GenericJsNode, project: any): boolean {
     return true;
   }
 
-  // apply(root: GenericJsNode, project: Project): GenericJsNode {
+  // apply(root: GenericJsNode, project: any): GenericJsNode {
   //   root
   //     .findChildrenOfType(MethodDefinition)
   //     .filter(node => node.methodName() === 'render')
@@ -26,7 +25,7 @@ export class DemoEditor implements Transformation {
   //   return root;
   // }
 
-  apply(root: GenericJsNode, project: Project): ReactComponent {
+  apply(root: GenericJsNode, project: any): ReactComponent {
     if (root.check(ReactClassComponent)) {
       return root.convertToReactComponent();
     }

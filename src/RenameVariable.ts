@@ -1,6 +1,5 @@
 import {
   GenericJsNode,
-  Project,
   Transformation,
   Identifier,
 } from 'js-transformabit';
@@ -14,13 +13,13 @@ export class RenameVariable implements Transformation {
     this.newName = args[1];
   }
 
-  check(root: GenericJsNode, project: Project): boolean {
+  check(root: GenericJsNode, project: any): boolean {
     return root
       .findChildrenOfType(Identifier)
       .has(n => n.node.name === this.oldName);
   }
 
-  apply(root: GenericJsNode, project: Project): GenericJsNode {
+  apply(root: GenericJsNode, project: any): GenericJsNode {
     root
       .findChildrenOfType(Identifier)
       .forEach(n => {

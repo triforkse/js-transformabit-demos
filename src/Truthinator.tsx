@@ -1,7 +1,6 @@
 import {
   GenericJsNode,
   JsNodeList,
-  Project,
   Transformation,
   JsCode,
   BinaryExpression,
@@ -13,11 +12,11 @@ export class Truthinator implements Transformation {
   configure(args: any[]): void {
   }
 
-  check(root: GenericJsNode, project: Project): boolean {
+  check(root: GenericJsNode): boolean {
     return root.findChildrenOfType(BinaryExpression).size() > 0;
   }
 
-  apply(root: GenericJsNode, project: Project): GenericJsNode {
+  apply(root: GenericJsNode): GenericJsNode {
     root.findChildrenOfType(BinaryExpression).forEach(binaryExpression => {
       if (this.isDangerousOperator(binaryExpression.operator)) {
         binaryExpression.operator = this.asSafeOperator(binaryExpression.operator);

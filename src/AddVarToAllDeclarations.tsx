@@ -1,7 +1,6 @@
 import {
   GenericJsNode,
   JsNodeList,
-  Project,
   Transformation,
   JsCode,
   BinaryExpression,
@@ -24,7 +23,7 @@ export class AddVarToAllDeclarations implements Transformation {
         this.useConst = args[1] as boolean;
     }
 
-    check(root: GenericJsNode, project: Project): boolean {
+    check(root: GenericJsNode, project: any): boolean {
         return this.findExpressionStatements(root).size() > 0;
     }
 
@@ -38,7 +37,7 @@ export class AddVarToAllDeclarations implements Transformation {
         });
     }
 
-    apply(root: GenericJsNode, project: Project): GenericJsNode {
+    apply(root: GenericJsNode, project: any): GenericJsNode {
         root.findChildrenOfType(FunctionDeclaration).forEach(functionDeclaration => {
             const statements = this.findExpressionStatements(functionDeclaration);
             const firstEncounters = statements.filter(expression => {
@@ -71,7 +70,7 @@ export class AddVarToAllDeclarations implements Transformation {
             if (parentEarliest !== -1) {
                 return parentEarliest;
             }
-        } 
+        }
         let first: number = null;
         this.findExpressionStatements(root).forEach(expression => {
             const left = ((expression.children().at(0) as AssignmentExpression).children().at(0) as Identifier).name;
@@ -118,7 +117,7 @@ export class AddVarToAllDeclarations implements Transformation {
             );
             variableDeclaration.sourceLocation = {
                 start: {
-                    line: expression.sourceLocation.start.line, 
+                    line: expression.sourceLocation.start.line,
                     column: expression.sourceLocation.start.column
                 },
                 end: {
