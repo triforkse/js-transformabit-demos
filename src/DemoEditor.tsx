@@ -13,11 +13,11 @@ export class DemoEditor implements Transformation {
   configure(args: any[]): void {
   }
 
-  check(root: GenericJsNode, project: any): boolean {
+  check(root: GenericJsNode): boolean {
     return true;
   }
 
-  // apply(root: GenericJsNode, project: any): GenericJsNode {
+  // apply(root: GenericJsNode): GenericJsNode {
   //   root
   //     .findChildrenOfType(MethodDefinition)
   //     .filter(node => node.methodName() === 'render')
@@ -25,7 +25,7 @@ export class DemoEditor implements Transformation {
   //   return root;
   // }
 
-  apply(root: GenericJsNode, project: any): ReactComponent {
+  apply(root: GenericJsNode): ReactComponent {
     if (root.check(ReactClassComponent)) {
       return root.convertToReactComponent();
     }

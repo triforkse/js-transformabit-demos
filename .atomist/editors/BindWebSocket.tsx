@@ -1,3 +1,6 @@
+import { Project, File, Yml } from '@atomist/rug/model/Core';
+import { ProjectEditor } from '@atomist/rug/operations/ProjectEditor';
+import { Result, Status, Parameter } from '@atomist/rug/operations/RugOperation';
 import {
   JsNode,
   GenericJsNode,
@@ -13,10 +16,6 @@ import {
   BlockStatement,
   ReactClassComponent
 } from 'js-transformabit';
-
-import { Project, File, Yml } from '@atomist/rug/model/Core';
-import { ProjectEditor } from '@atomist/rug/operations/ProjectEditor';
-import { Result, Status, Parameter } from '@atomist/rug/operations/RugOperation';
 
 type BindWebSocketParams = {
   component: string;
@@ -87,3 +86,5 @@ class BindWebSocket implements ProjectEditor {
     }
   }
 }
+
+let editor = new BindWebSocket();

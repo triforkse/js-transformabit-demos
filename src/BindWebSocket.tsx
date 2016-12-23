@@ -22,7 +22,7 @@ export class BindWebSocket implements Transformation {
     this.address = args[1];
   }
 
-  check(root: GenericJsNode, project: any): boolean {
+  check(root: GenericJsNode): boolean {
     return this.getMatchingReactComponents(root).size() > 0;
   }
 
@@ -31,7 +31,7 @@ export class BindWebSocket implements Transformation {
       .filter(k => k.id().name === this.component && ReactClassComponent.check(k));
   }
 
-  apply(root: GenericJsNode, project: any): GenericJsNode {
+  apply(root: GenericJsNode): GenericJsNode {
     const component = this.getMatchingReactComponents(root).first();
     let ctor = component.findConstructor();
     if (!ctor) {

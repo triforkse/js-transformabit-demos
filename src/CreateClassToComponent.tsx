@@ -9,11 +9,11 @@ export class CreateClassToComponent implements Transformation {
   configure(args: any[]): void {
   }
 
-  check(root: GenericJsNode, project: any): boolean {
+  check(root: GenericJsNode): boolean {
     return root.findChildrenOfType(ReactComponent) !== undefined;
   }
 
-  apply(root: GenericJsNode, project: any): GenericJsNode {
+  apply(root: GenericJsNode): GenericJsNode {
     root
       .findChildrenOfType(ReactComponent)
       .forEach(c => c.convertToReactClassComponent());

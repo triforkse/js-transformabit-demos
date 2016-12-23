@@ -1,4 +1,5 @@
 {
+  "name": "@trifork/reactjs-editors",
   "version": "0.1.0",
   "dependencies": {
     "@atomist/rug": "^0.7.1"

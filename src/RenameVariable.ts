@@ -13,13 +13,13 @@ export class RenameVariable implements Transformation {
     this.newName = args[1];
   }
 
-  check(root: GenericJsNode, project: any): boolean {
+  check(root: GenericJsNode): boolean {
     return root
       .findChildrenOfType(Identifier)
       .has(n => n.node.name === this.oldName);
   }
 
-  apply(root: GenericJsNode, project: any): GenericJsNode {
+  apply(root: GenericJsNode): GenericJsNode {
     root
       .findChildrenOfType(Identifier)
       .forEach(n => {

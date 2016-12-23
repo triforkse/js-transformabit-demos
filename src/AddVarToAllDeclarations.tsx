@@ -23,7 +23,7 @@ export class AddVarToAllDeclarations implements Transformation {
         this.useConst = args[1] as boolean;
     }
 
-    check(root: GenericJsNode, project: any): boolean {
+    check(root: GenericJsNode): boolean {
         return this.findExpressionStatements(root).size() > 0;
     }
 
@@ -37,7 +37,7 @@ export class AddVarToAllDeclarations implements Transformation {
         });
     }
 
-    apply(root: GenericJsNode, project: any): GenericJsNode {
+    apply(root: GenericJsNode): GenericJsNode {
         root.findChildrenOfType(FunctionDeclaration).forEach(functionDeclaration => {
             const statements = this.findExpressionStatements(functionDeclaration);
             const firstEncounters = statements.filter(expression => {
