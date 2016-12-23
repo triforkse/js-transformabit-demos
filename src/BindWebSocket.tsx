@@ -52,18 +52,17 @@ export class BindWebSocket implements Transformation {
 
   private addConnection(ctor: MethodDefinition) {
     const body = ctor.body();
-    if (body instanceof BlockStatement) {
-      body
-        .appendStatement(
-          <ExpressionStatement>
-            <AssignmentExpression>
-              <MemberExpression object="this" property="connection" />
-              <NewExpression callee='WebSocket'>
-                <Literal value={"wss://" + this.address} />
-              </NewExpression>
-            </AssignmentExpression>
-          </ExpressionStatement> as ExpressionStatement
-        );
+    if (body.check(BlockStatement)) {
+      body.appendStatement(
+        <ExpressionStatement>
+          <AssignmentExpression>
+            <MemberExpression object="this" property="connection" />
+            <NewExpression callee='WebSocket'>
+              <Literal value={"wss://" + this.address} />
+            </NewExpression>
+          </AssignmentExpression>
+        </ExpressionStatement> as ExpressionStatement
+      );
     }
   }
 }
