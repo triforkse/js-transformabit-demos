@@ -19,7 +19,7 @@ import {
 } from 'js-transformabit';
 
 import { DemoEditor } from './DemoEditor';
-import { BindWebSocket } from './BindWebSocket';
+import { AddWebSocket } from './AddWebSocket';
 
 let node = (
   <ReactClassComponent id='MyComponent'>
@@ -48,7 +48,7 @@ console.log(newNode.format());
 // console.log(node.createConstructor().format());
 
 // Demo: bind web sockets
-// let t = new BindWebSocket();
+// let t = new AddWebSocket();
 // t.configure(['MyComponent', 'foo']);
 // t.apply(node, null);
 // console.log(node.format());

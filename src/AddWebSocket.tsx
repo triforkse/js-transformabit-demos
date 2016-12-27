@@ -13,7 +13,7 @@ import {
   ReactClassComponent
 } from 'js-transformabit';
 
-export class BindWebSocket implements Transformation {
+export class AddWebSocket implements Transformation {
   component: string;
   address: string;
 

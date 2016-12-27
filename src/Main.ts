@@ -1,4 +1,4 @@
-import { BindWebSocket } from './BindWebSocket';
+import { AddWebSocket } from './AddWebSocket';
 import { CreateClassToComponent } from './CreateClassToComponent';
 import { RenameVariable } from './RenameVariable';
 import { AddVarToAllDeclarations } from './AddVarToAllDeclarations';
@@ -6,7 +6,7 @@ import { PropTypeTemplate } from './PropTypeTemplate'
 import { Truthinator } from './Truthinator';
 
 export = [
-  BindWebSocket,
+  AddWebSocket,
   CreateClassToComponent,
   RenameVariable,
   AddVarToAllDeclarations,
