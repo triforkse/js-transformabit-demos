@@ -1,27 +1,13 @@
-import { Project, File, Yml } from '@atomist/rug/model/Core';
+import { Project } from '@atomist/rug/model/Core';
 import { ProjectEditor } from '@atomist/rug/operations/ProjectEditor';
 import { Result, Status, Parameter } from '@atomist/rug/operations/RugOperation';
-import {
-  JsNode,
-  GenericJsNode
-} from 'js-transformabit/dist/JsNode';
-import {
-  JsCode,
-  MethodDefinition,
-  MemberExpression,
-  ExpressionStatement,
-  AssignmentExpression,
-  NewExpression,
-  Literal,
-  ClassDeclaration,
-  BlockStatement,
-  ReactClassComponent
-} from 'js-transformabit/dist/JsCode';
+import { JsNode } from 'js-transformabit/dist/JsNode';
+import * as x from 'js-transformabit/dist/JsCode';
 
 type AddWebSocketParams = {
   component: string;
   address: string;
-}
+};
 
 class AddWebSocket implements ProjectEditor {
   tags = ['websocket', 'react'];
@@ -53,8 +39,8 @@ class AddWebSocket implements ProjectEditor {
   edit(project: Project, params: AddWebSocketParams): Result {
     const file = project.findFile('dummy.js');
     const root = JsNode.fromModuleCode(file.content());
-    const component = root.findChildrenOfType(ClassDeclaration, null, true)
-      .filter(k => k.id().name === params.component && ReactClassComponent.check(k))
+    const component = root.findChildrenOfType(x.ClassDeclaration, null, true)
+      .filter(k => k.id().name === params.component && x.ReactClassComponent.check(k))
       .first();
     let ctor = component.findConstructor();
     if (!ctor) {
@@ -67,21 +53,21 @@ class AddWebSocket implements ProjectEditor {
     return new Result(Status.Success, 'Hooray!');
   }
 
-  private addHandlers(ctor: MethodDefinition) {
-    ctor.insertAfter(new MethodDefinition().build({key: 'onMessage', kind: 'method' }, []));
-    ctor.insertAfter(new MethodDefinition().build({key: 'onOpen', kind: 'method' }, []));
-    ctor.insertAfter(new MethodDefinition().build({key: 'onError', kind: 'method' }, []));
+  private addHandlers(ctor: x.MethodDefinition) {
+    ctor.insertAfter(new x.MethodDefinition().build({key: 'onMessage', kind: 'method' }, []));
+    ctor.insertAfter(new x.MethodDefinition().build({key: 'onOpen', kind: 'method' }, []));
+    ctor.insertAfter(new x.MethodDefinition().build({key: 'onError', kind: 'method' }, []));
   }
 
-  private addConnection(ctor: MethodDefinition, params: AddWebSocketParams) {
+  private addConnection(ctor: x.MethodDefinition, params: AddWebSocketParams) {
     const body = ctor.body();
-    if (body.check(BlockStatement)) {
+    if (body.check(x.BlockStatement)) {
       body.appendStatement(
-        new ExpressionStatement().build({}, [
-          new AssignmentExpression().build({}, [
-            new MemberExpression().build({object: 'this', property: 'connection'}, []),
-            new NewExpression().build({callee: 'WebSocket'}, [
-              new Literal().build({value: 'wss://' + params.address}, [])
+        new x.ExpressionStatement().build({}, [
+          new x.AssignmentExpression().build({}, [
+            new x.MemberExpression().build({object: 'this', property: 'connection'}, []),
+            new x.NewExpression().build({callee: 'WebSocket'}, [
+              new x.Literal().build({value: 'wss://' + params.address}, [])
             ])
           ])
         ])
@@ -90,4 +76,4 @@ class AddWebSocket implements ProjectEditor {
   }
 }
 
-let editor = new AddWebSocket();
+const editor = new AddWebSocket();

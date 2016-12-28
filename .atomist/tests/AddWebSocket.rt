@@ -2,17 +2,7 @@ scenario AddWebSocket
 
 given
   "dummy.js" = """class WebFeed extends React.Component {
-  render() {
-    return (
-      <div>
-        <ul>
-          {this.props.data.forEach(item => {
-            return (<li>{item.data}</li>);
-          })}
-        </ul>
-      </div>
-    )
-  }
+  render() {}
 }"""
 
 when
@@ -28,15 +18,5 @@ then
   onError() {}
   onOpen() {}
   onMessage() {}
-  render() {
-    return (
-      <div>
-        <ul>
-          {this.props.data.forEach(item => {
-            return (<li>{item.data}</li>);
-          })}
-        </ul>
-      </div>
-    )
-  }
+  render() {}
 }"""
