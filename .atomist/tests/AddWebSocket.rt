@@ -1,7 +1,7 @@
 scenario AddWebSocket
 
 given
-  "dummy.js" = """class WebFeed extends React.Component {
+  "test.js" = """class WebFeed extends React.Component {
   render() {}
 }"""
 
@@ -9,7 +9,7 @@ when
   AddWebSocket component="WebFeed", address="localhost"
 
 then
-  fileContains "dummy.js" """class WebFeed extends React.Component {
+  fileContains "test.js" """class WebFeed extends React.Component {
   constructor() {
     super();
     this.connection = new WebSocket("wss://localhost");

@@ -1,8 +1,10 @@
 import { Project } from '@atomist/rug/model/Core';
 import { ProjectEditor } from '@atomist/rug/operations/ProjectEditor';
 import { Result, Status, Parameter } from '@atomist/rug/operations/RugOperation';
+
+// Import in this exact order, or disaster strikes!
 import { JsNode } from 'js-transformabit/dist/JsNode';
-import * as x from 'js-transformabit/dist/JsCode';
+import * as js from 'js-transformabit/dist/JsCode';
 
 type AddWebSocketParams = {
   component: string;
@@ -37,37 +39,45 @@ class AddWebSocket implements ProjectEditor {
   ];
 
   edit(project: Project, params: AddWebSocketParams): Result {
-    const file = project.findFile('dummy.js');
-    const root = JsNode.fromModuleCode(file.content());
-    const component = root.findChildrenOfType(x.ClassDeclaration, null, true)
-      .filter(k => k.id().name === params.component && x.ReactClassComponent.check(k))
-      .first();
-    let ctor = component.findConstructor();
-    if (!ctor) {
-      component.createConstructor();
-      ctor = component.findConstructor();
+    const files = project.files()
+      .filter(file => file.path().charAt(0) !== '.')
+      .filter(file => file.name().match(/\.js$/) !== null);
+    for (const file of files) {
+      try {
+        const root = JsNode.fromModuleCode(file.content());
+        const component = root.findChildrenOfType(js.ClassDeclaration)
+          .filter(k => k.id().name === params.component && js.ReactClassComponent.check(k))
+          .first();
+        let ctor = component.findConstructor();
+        if (!ctor) {
+          component.createConstructor();
+          ctor = component.findConstructor();
+        }
+        this.addHandlers(ctor);
+        this.addConnection(ctor, params);
+        file.setContent(root.format());
+      } catch (error) {
+        // project.println(error.toString());
+      }
     }
-    this.addHandlers(ctor);
-    this.addConnection(ctor, params);
-    file.setContent(root.format());
-    return new Result(Status.Success, 'Hooray!');
+    return new Result(Status.Success);
   }
 
-  private addHandlers(ctor: x.MethodDefinition) {
-    ctor.insertAfter(new x.MethodDefinition().build({key: 'onMessage', kind: 'method' }, []));
-    ctor.insertAfter(new x.MethodDefinition().build({key: 'onOpen', kind: 'method' }, []));
-    ctor.insertAfter(new x.MethodDefinition().build({key: 'onError', kind: 'method' }, []));
+  private addHandlers(ctor: js.MethodDefinition) {
+    ctor.insertAfter(new js.MethodDefinition().build({key: 'onMessage', kind: 'method' }, []));
+    ctor.insertAfter(new js.MethodDefinition().build({key: 'onOpen', kind: 'method' }, []));
+    ctor.insertAfter(new js.MethodDefinition().build({key: 'onError', kind: 'method' }, []));
   }
 
-  private addConnection(ctor: x.MethodDefinition, params: AddWebSocketParams) {
+  private addConnection(ctor: js.MethodDefinition, params: AddWebSocketParams) {
     const body = ctor.body();
-    if (body.check(x.BlockStatement)) {
+    if (body.check(js.BlockStatement)) {
       body.appendStatement(
-        new x.ExpressionStatement().build({}, [
-          new x.AssignmentExpression().build({}, [
-            new x.MemberExpression().build({object: 'this', property: 'connection'}, []),
-            new x.NewExpression().build({callee: 'WebSocket'}, [
-              new x.Literal().build({value: 'wss://' + params.address}, [])
+        new js.ExpressionStatement().build({}, [
+          new js.AssignmentExpression().build({}, [
+            new js.MemberExpression().build({object: 'this', property: 'connection'}, []),
+            new js.NewExpression().build({callee: 'WebSocket'}, [
+              new js.Literal().build({value: 'wss://' + params.address}, [])
             ])
           ])
         ])
