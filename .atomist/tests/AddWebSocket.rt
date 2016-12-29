@@ -2,8 +2,16 @@ scenario AddWebSocket
 
 given
   "test.js" = """class WebFeed extends React.Component {
+  constructor() {
+    super();
+  }
+
+  onError() {}
+  onOpen() {}
+  onMessage() {}
   render() {}
 }"""
+
 
 when
   AddWebSocket component="WebFeed", address="localhost"
@@ -13,6 +21,9 @@ then
   constructor() {
     super();
     this.connection = new WebSocket("wss://localhost");
+    this.connection.onOpen = this.onOpen;
+    this.connection.onError = this.onError;
+    this.connection.onError = this.onError;
   }
 
   onError() {}

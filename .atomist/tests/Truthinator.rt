@@ -1,0 +1,32 @@
+scenario Truthinator
+
+given
+  "test.js" = """
+  if (a == b) {
+    console.log('a is equal to b');
+  }
+  if (c != d) {
+    console.log('c is not equal to d');
+  }
+
+  if (e === f) {
+    console.log('e is equal to f');
+  }
+  """
+
+when
+  Truthinator
+
+then
+  fileContains "test.js" """
+  if (a === b) {
+    console.log('a is equal to b');
+  }
+  if (c !== d) {
+    console.log('c is not equal to d');
+  }
+
+  if (e === f) {
+    console.log('e is equal to f');
+  }
+  """

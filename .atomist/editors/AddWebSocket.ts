@@ -1,10 +1,12 @@
-import { Project } from '@atomist/rug/model/Core';
+import { Project, File } from '@atomist/rug/model/Core';
 import { ProjectEditor } from '@atomist/rug/operations/ProjectEditor';
 import { Result, Status, Parameter } from '@atomist/rug/operations/RugOperation';
 
 // Import in this exact order, or disaster strikes!
-import { JsNode } from 'js-transformabit/dist/JsNode';
+import { JsNode, GenericJsNode } from 'js-transformabit/dist/JsNode';
 import * as js from 'js-transformabit/dist/JsCode';
+
+import {ReactContext} from '../ReactContext';
 
 type AddWebSocketParams = {
   component: string;
@@ -39,10 +41,12 @@ class AddWebSocket implements ProjectEditor {
   ];
 
   edit(project: Project, params: AddWebSocketParams): Result {
-    const files = project.files()
-      .filter(file => file.path().charAt(0) !== '.')
-      .filter(file => file.name().match(/\.js$/) !== null);
-    for (const file of files) {
+    let rc = new ReactContext(project);
+    rc.jsFiles().forEach(file => this.exec(file, params));
+    return new Result(Status.Success);
+  }
+
+  private exec(file: File, params: AddWebSocketParams) {
       try {
         const root = JsNode.fromModuleCode(file.content());
         const component = root.findChildrenOfType(js.ClassDeclaration)
@@ -59,31 +63,92 @@ class AddWebSocket implements ProjectEditor {
       } catch (error) {
         // project.println(error.toString());
       }
-    }
-    return new Result(Status.Success);
   }
 
   private addHandlers(ctor: js.MethodDefinition) {
-    ctor.insertAfter(new js.MethodDefinition().build({key: 'onMessage', kind: 'method' }, []));
-    ctor.insertAfter(new js.MethodDefinition().build({key: 'onOpen', kind: 'method' }, []));
-    ctor.insertAfter(new js.MethodDefinition().build({key: 'onError', kind: 'method' }, []));
+    if (!this.hasMethod('onOpen', ctor)) {
+      ctor.insertAfter(new js.MethodDefinition().build({key: 'onOpen', kind: 'method' }, []));
+    }
+        if (!this.hasMethod('onMessage', ctor)) {
+      ctor.insertAfter(new js.MethodDefinition().build({key: 'onMessage', kind: 'method' }, []));
+    }
+    if (!this.hasMethod('onError', ctor)) {
+      ctor.insertAfter(new js.MethodDefinition().build({key: 'onError', kind: 'method' }, []));
+    }
+
+  }
+
+  private hasMethod(methodName: string, ctor: GenericJsNode): boolean {
+	  let root = ctor.findClosestParentOfType(js.ClassDeclaration);
+	  if (root === null) {
+		  return false;
+	  }
+
+	  return root.findChildrenOfType(js.MethodDefinition).filter(md => {
+      const key = md.key();
+      if (key.check(js.Identifier)) {
+			  return key.name === methodName;
+		  }
+		  return false;
+	 }).size() > 0;
   }
 
   private addConnection(ctor: js.MethodDefinition, params: AddWebSocketParams) {
     const body = ctor.body();
     if (body.check(js.BlockStatement)) {
-      body.appendStatement(
-        new js.ExpressionStatement().build({}, [
-          new js.AssignmentExpression().build({}, [
-            new js.MemberExpression().build({object: 'this', property: 'connection'}, []),
-            new js.NewExpression().build({callee: 'WebSocket'}, [
-              new js.Literal().build({value: 'wss://' + params.address}, [])
-            ])
-          ])
-        ])
-      );
+      body.appendStatement(this.connectionInitStatement(params));
+		  body.appendStatement(this.eventConnection('open'));
+	  	body.appendStatement(this.eventConnection('error'));
+		  body.appendStatement(this.eventConnection('error'));
+
     }
   }
+
+  private connectionInitStatement(params: AddWebSocketParams): js.ExpressionStatement {
+	  return new js.ExpressionStatement().build({}, [
+		 new js.AssignmentExpression().build({}, [
+			new js.MemberExpression().build({object: 'this', property: 'connection'}, []),
+			new js.NewExpression().build({callee: 'WebSocket'}, [
+			  new js.Literal().build({value: 'wss://' + params.address}, [])
+			])
+		 ])
+	 ]);
+  }
+/*
+  private hasInit(body: js.BlockStatement, params: AddWebSocketParams): boolean {
+    return body.findChildrenOfType(js.AssignmentExpression).filter(exp => {
+      const left = exp.left();
+      if (left.check(js.MemberExpression)) {
+        if (left.object.name !== "this" || left.property.name !== "connection") {
+          return false;
+        }
+      } else {
+        return false;
+      }
+      const right = exp.right();
+      if (right.check(js.NewExpression)) {
+        this.project.println(right.callee().children().at(0).format());
+      } else {
+        return false;
+      }
+
+      return false;
+    }).size() > 0;
+  }
+*/
+  private eventConnection(event: string): js.ExpressionStatement {
+	  let thisConnection = new js.MemberExpression().build({object: 'this', property: 'connection'}, []);
+	  let leftHand = new js.MemberExpression().build({object: thisConnection, property: 'on' + this.capitalizeFirstLetter(event)}, []);
+	  let rightHand = new js.MemberExpression().build({object: 'this', property: 'on' + this.capitalizeFirstLetter(event)}, []);
+	  return new js.ExpressionStatement().build({}, [
+		  new js.AssignmentExpression().build({}, [leftHand, rightHand])
+	  	]);
+  }
+
+	private capitalizeFirstLetter(string: string) {
+		return string.charAt(0).toUpperCase() + string.slice(1);
+	}
+
 }
 
-const editor = new AddWebSocket();
+const addWebSocketEditor = new AddWebSocket();

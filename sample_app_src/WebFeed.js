@@ -21,11 +21,21 @@ class WebFeed extends React.Component {
     return (
       <div>
         <ul>
-          {this.props.data.forEach(item => {
-            return (<li>{item.data}</li>);
+          {this.props.fetchedData.forEach(item => {
+            return (<li>{item.data}{this.props.name}</li>);
           })}
         </ul>
       </div>
     )
   }
 }
+
+
+
+WebFeed.propTypes = {
+  fetchedData: React.PropTypes.any,
+  name: React.PropTypes.any
+};
+
+
+

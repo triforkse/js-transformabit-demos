@@ -1,0 +1,434 @@
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "AddWebSocket"
+  group: "trifork"
+  artifact: "reactjs-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "014665f*"
+  parameters:
+    - "component": "WebFeed"
+    - "address": "127.0.0.1"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "AddWebSocket"
+  group: "trifork"
+  artifact: "reactjs-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "014665f*"
+  parameters:
+    - "component": "WebFeed"
+    - "address": "127.0.0.1"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "AddWebSocket"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "189c4e5*"
+  parameters:
+    - "component": "WebFeed"
+    - "address": "127.0.0.1"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "AddWebSocket"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "189c4e5*"
+  parameters:
+    - "component": "WebFeed"
+    - "address": "127.0.0.1"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "AddWebSocket"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "189c4e5*"
+  parameters:
+    - "component": "WebFeed"
+    - "address": "127.0.0.1"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "AddWebSocket"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "189c4e5*"
+  parameters:
+    - "component": "WebFeed"
+    - "address": "127.0.0.2"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "AddWebSocket"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "189c4e5*"
+  parameters:
+    - "component": "WebFeed"
+    - "address": "127.0.0.2"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "AddWebSocket"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "189c4e5*"
+  parameters:
+    - "component": "WebFeed"
+    - "address": "127.0.0.2"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "AddWebSocket"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "189c4e5*"
+  parameters:
+    - "component": "WebFeed"
+    - "address": "127.0.0.2"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "AddWebSocket"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "189c4e5*"
+  parameters:
+    - "component": "WebFeed"
+    - "address": "127.0.0.2"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "AddWebSocket"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "189c4e5*"
+  parameters:
+    - "component": "WebFeed"
+    - "address": "127.0.0.2"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "AddWebSocket"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "189c4e5*"
+  parameters:
+    - "component": "WebFeed"
+    - "address": "127.0.0.2"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "AddWebSocket"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "189c4e5*"
+  parameters:
+    - "component": "WebFeed"
+    - "address": "127.0.0.2"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "AddWebSocket"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "189c4e5*"
+  parameters:
+    - "component": "WebFeed"
+    - "address": "127.0.0.2"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "AddWebSocket"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "189c4e5*"
+  parameters:
+    - "component": "WebFeed"
+    - "address": "127.0.0.2"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "AddWebSocket"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "189c4e5*"
+  parameters:
+    - "component": "WebFeed"
+    - "address": "127.0.0.2"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "AddWebSocket"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "189c4e5*"
+  parameters:
+    - "component": "WebFeed"
+    - "address": "127.0.0.2"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "AddWebSocket"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "189c4e5*"
+  parameters:
+    - "component": "WebFeed"
+    - "address": "127.0.0.2"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "AddWebSocket"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "189c4e5*"
+  parameters:
+    - "component": "WebFeed"
+    - "address": "127.0.0.2"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "PropTypeInsert"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "fe91b35*"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "PropTypeInsert"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "fe91b35*"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "PropTypeInsert"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "fe91b35*"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "PropTypeInsert"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "fe91b35*"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "PropTypeInsert"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "fe91b35*"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "PropTypeInsert"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "fe91b35*"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "PropTypeInsert"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "fe91b35*"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "PropTypeInsert"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "fe91b35*"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "PropTypeInsert"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "fe91b35*"
+
+---
+kind: "operation"
+client: "rug-cli 0.18.1"
+editor:
+  name: "PropTypeInsert"
+  group: "trifork"
+  artifact: "demo-editors"
+  version: "0.1.0"
+  origin:
+    repo: "triforkse/js-transformabit-demos.git"
+    branch: "master"
+    sha: "fe91b35*"
+
