@@ -40,7 +40,7 @@ let node = (
 // console.log(node.findFirstChildOfType(ReactComponentRender).format());
 
 // Demo: editor
-let newNode = new DemoEditor().apply(node, null);
+let newNode = new DemoEditor().apply(node);
 node = newNode.convertToReactClassComponent();
 console.log(newNode.format());
 
