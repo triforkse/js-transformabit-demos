@@ -40,7 +40,9 @@ class AddWebSocket implements ProjectEditor {
     }
   ];
 
+  project: Project;
   edit(project: Project, params: AddWebSocketParams): Result {
+    this.project = project;
     let rc = new ReactContext(project);
     rc.jsFiles().forEach(file => this.exec(file, params));
     return new Result(Status.Success);
@@ -50,8 +52,16 @@ class AddWebSocket implements ProjectEditor {
       try {
         const root = JsNode.fromModuleCode(file.content());
         const component = root.findChildrenOfType(js.ClassDeclaration)
-          .filter(k => k.id().name === params.component && js.ReactClassComponent.check(k))
-          .first();
+          .filter(k => {
+            this.project.println(k.id().name);
+          return k.id().name === params.component && js.ReactClassComponent.check(k);
+        }).first();
+        if (typeof component === "undefined") {
+          return;
+        }
+        this.project.println(component.constructor().name);
+        this.project.println("component.id.name");
+        this.project.println("\""+component.id().format() +"\"");
         let ctor = component.findConstructor();
         if (!ctor) {
           component.createConstructor();
@@ -61,7 +71,7 @@ class AddWebSocket implements ProjectEditor {
         this.addConnection(ctor, params);
         file.setContent(root.format());
       } catch (error) {
-        // project.println(error.toString());
+        this.project.println(error.toString());
       }
   }
 
