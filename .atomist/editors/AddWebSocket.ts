@@ -51,17 +51,18 @@ class AddWebSocket implements ProjectEditor {
   private exec(file: File, params: AddWebSocketParams) {
       try {
         const root = JsNode.fromModuleCode(file.content());
-        const component = root.findChildrenOfType(js.ClassDeclaration)
-          .filter(k => {
-            this.project.println(k.id().name);
-          return k.id().name === params.component && js.ReactClassComponent.check(k);
-        }).first();
+        const component = root
+          .findFirstChildOfType(js.ReactClassComponent, node => node.id().name === params.component);
+          // .filter(k => {
+          //   this.project.println(file.content());
+          //   return k.id().name === params.component && js.ReactClassComponent.check(k);
+          // }).first();
         if (typeof component === "undefined") {
           return;
         }
-        this.project.println(component.constructor().name);
-        this.project.println("component.id.name");
-        this.project.println("\""+component.id().format() +"\"");
+        // this.project.println(component.constructor().name);
+        // this.project.println("component.id.name");
+        // this.project.println("\""+component.id().name +"\"");
         let ctor = component.findConstructor();
         if (!ctor) {
           component.createConstructor();
