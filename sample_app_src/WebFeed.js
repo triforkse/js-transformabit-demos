@@ -1,22 +1,14 @@
 class WebFeed extends React.Component {
   constructor() {
     super();
-
-    this.connection = new WebSocket("wss://127.0.0.2");
+    this.connection = new WebSocket("wss://localhost");
     this.connection.onOpen = this.onOpen;
     this.connection.onError = this.onError;
     this.connection.onError = this.onError;
   }
-
-
-
-  onOpen() {}
   onError() {}
   onMessage() {}
-
-
-
-
+  onOpen() {}
   render() {
     return (
       <div>
@@ -29,13 +21,3 @@ class WebFeed extends React.Component {
     )
   }
 }
-
-
-
-WebFeed.propTypes = {
-  fetchedData: React.PropTypes.any,
-  name: React.PropTypes.any
-};
-
-
-

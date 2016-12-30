@@ -21,9 +21,8 @@ then
     this.connection.onError = this.onError;
     this.connection.onError = this.onError;
   }
-
   onError() {}
-  onOpen() {}
   onMessage() {}
+  onOpen() {}
   render() {}
 }"""
