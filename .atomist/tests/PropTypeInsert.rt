@@ -24,3 +24,35 @@ then
 UserCard.propTypes = {
   name: React.PropTypes.any
 };"""
+
+scenario PropTypeInsert
+
+given
+  "test.js" = """class UserCard extends React.Component {
+  render() {
+    return (
+      <div>{this.props.name}<br/>{this.props.rank}</div>
+    );
+  }
+}
+
+UserCard.propTypes = {
+  name: React.PropTypes.any
+};"""
+
+when
+  PropTypeInsert
+
+then
+  fileContains "test.js" """class UserCard extends React.Component {
+  render() {
+    return (
+      <div>{this.props.name}<br/>{this.props.rank}</div>
+    );
+  }
+}
+
+UserCard.propTypes = {
+  name: React.PropTypes.any,
+  rank: React.PropTypes.any
+};"""
