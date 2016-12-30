@@ -6,10 +6,11 @@
     "build": "tsc",
     "test": "jest",
     "test-watch": "jest --watch",
-    "demo": "node ./build/DemoPrinter.js",
-    "demo-watch": "nodemon -e js ./build/DemoPrinter.js"
+    "demo": "node ./build/src/DemoPrinter.js",
+    "demo-watch": "nodemon -e js ./build/src/DemoPrinter.js"
   },
   "devDependencies": {
+    "@atomist/rug": "^0.7.1",
     "@types/jest": "^16.0.2",
     "@types/node": "^6.0.54",
     "jest": "^18.1.0",

@@ -8,6 +8,6 @@
     "reactNamespace": "JsCode"
   },
   "include": [
-    "src"
+    "src/**/*"
   ]
 }

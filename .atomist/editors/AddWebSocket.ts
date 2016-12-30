@@ -2,18 +2,34 @@ import { Project, File } from '@atomist/rug/model/Core';
 import { ProjectEditor } from '@atomist/rug/operations/ProjectEditor';
 import { Result, Status, Parameter } from '@atomist/rug/operations/RugOperation';
 
-// Import in this exact order, or disaster strikes!
 import { JsNode, GenericJsNode } from 'js-transformabit/dist/JsNode';
 import * as js from 'js-transformabit/dist/JsCode';
 
 import {ReactContext} from '../ReactContext';
 
-type AddWebSocketParams = {
+// -----------------------------------------------------------------------------
+// These interfaces should actually be defined in ../ReactEditor.ts, but when
+// you actually try and import it will fracture all the exported symbols in
+// js-transformabit and fail miserably.
+// This is a problem with the way Rug handles CommonJS imports.
+// import { EditorParams, ReactEditor } from '../ReactEditor';
+
+export interface EditorParams {
+  [param: string]: string;
+}
+
+export interface ReactEditor extends ProjectEditor {
+  editNode(file: js.File, params: EditorParams): js.File;
+}
+
+// -----------------------------------------------------------------------------
+
+interface AddWebSocketParams extends EditorParams {
   component: string;
   address: string;
 };
 
-class AddWebSocket implements ProjectEditor {
+export class AddWebSocket implements ReactEditor {
   tags = ['websocket', 'react'];
   name = 'AddWebSocket';
   description = 'Adds a websocket to a React component';
@@ -39,8 +55,8 @@ class AddWebSocket implements ProjectEditor {
       maxLength: 20
     }
   ];
-
   project: Project;
+
   edit(project: Project, params: AddWebSocketParams): Result {
     this.project = project;
     let rc = new ReactContext(project);
@@ -48,25 +64,31 @@ class AddWebSocket implements ProjectEditor {
     return new Result(Status.Success);
   }
 
-  private exec(file: File, params: AddWebSocketParams) {
-      try {
-        const root = JsNode.fromModuleCode(file.content());
-        const component = root
-          .findFirstChildOfType(js.ReactClassComponent, node => node.id().name === params.component);
-        if (typeof component === "undefined") {
-          return;
-        }
-        let ctor = component.findConstructor();
-        if (!ctor) {
-          component.createConstructor();
-          ctor = component.findConstructor();
-        }
-        this.addHandlers(ctor);
-        this.addConnection(ctor, params);
-        file.setContent(root.format());
-      } catch (error) {
-        this.project.println(error.toString());
+  editNode(file: js.File, params: AddWebSocketParams): js.File {
+    const component = file
+      .findFirstChildOfType(js.ReactClassComponent, node => node.id().name === params.component);
+    if (component !== undefined) {
+      let ctor = component.findConstructor();
+      if (!ctor) {
+        component.createConstructor();
+        ctor = component.findConstructor();
       }
+      this.addHandlers(ctor);
+      this.addConnection(ctor, params);
+    }
+    return file;
+  }
+
+  private exec(file: File, params: AddWebSocketParams) {
+    try {
+      let root = JsNode.fromModuleCode(file.content());
+      root = this.editNode(root, params);
+      if (root) {
+        file.setContent(root.format());
+      }
+    } catch (error) {
+      this.project.println(error.toString());
+    }
   }
 
   private addHandlers(ctor: js.MethodDefinition) {

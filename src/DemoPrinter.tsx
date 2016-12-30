@@ -1,36 +1,18 @@
-import {
-  JsNode,
-  GenericJsNode,
-  JsCode,
-  ReturnStatement,
-  CallExpression,
-  MethodDefinition,
-  BlockStatement,
-  MemberExpression,
-  Literal,
-  Identifier,
-  VariableDeclaration,
-  ReactComponent,
-  ReactClassComponent,
-  ReactStatelessComponent,
-  ReactComponentRender,
-  ReactComponentEventHandler,
-  ClassDeclaration
-} from 'js-transformabit';
+import { JsCode, JsNode, GenericJsNode } from 'js-transformabit';
+import * as js from 'js-transformabit';
 
-import { DemoEditor } from './DemoEditor';
-import { AddWebSocket } from './AddWebSocket';
+let node: GenericJsNode;
 
-let node = (
-  <ReactClassComponent id='MyComponent'>
-    <ReactComponentRender>
-      {'<h1>Trifork ftw!</h1>'}
-    </ReactComponentRender>
-    <ReactComponentEventHandler name='handleLife'>
-      {JsNode.fromFunctionBody('return 42;').at(0)}
-    </ReactComponentEventHandler>
-  </ReactClassComponent>
-) as ReactClassComponent;
+// node = (
+//   <js.ReactClassComponent id='MyComponent'>
+//     <js.ReactComponentRender>
+//       {'<h1>Trifork ftw!</h1>'}
+//     </js.ReactComponentRender>
+//     <js.ReactComponentEventHandler name='handleLife'>
+//       {JsNode.fromFunctionBody('return 42;').at(0)}
+//     </js.ReactComponentEventHandler>
+//   </js.ReactClassComponent>
+// ) as js.ReactClassComponent;
 // console.log(node.format());
 
 // Demo: format and re-parse
@@ -40,18 +22,21 @@ let node = (
 // console.log(node.findFirstChildOfType(ReactComponentRender).format());
 
 // Demo: editor
-let newNode = new DemoEditor().apply(node);
-node = newNode.convertToReactClassComponent();
-console.log(newNode.format());
+// import { DemoEditor } from './DemoEditor';
+// const newNode = new DemoEditor().apply(node);
+// node = newNode.convertToReactClassComponent();
+// console.log(newNode.format());
 
 // Demo: add constructor
 // console.log(node.createConstructor().format());
 
 // Demo: bind web sockets
-// let t = new AddWebSocket();
-// t.configure(['MyComponent', 'foo']);
-// t.apply(node, null);
-// console.log(node.format());
+import { AddWebSocket } from '../.atomist/editors/AddWebSocket';
+node = new AddWebSocket().editNode(JsNode.fromModuleCode('class Foo extends React.Component {}'), {
+  component: 'Foo',
+  address: 'localhost'
+});
+console.log(node.format());
 
 // Demo: type guards
 // if (node.check(ClassDeclaration)) {
