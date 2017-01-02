@@ -22,21 +22,28 @@ let node: GenericJsNode;
 // console.log(node.findFirstChildOfType(ReactComponentRender).format());
 
 // Demo: editor
-// import { DemoEditor } from './DemoEditor';
-// const newNode = new DemoEditor().apply(node);
-// node = newNode.convertToReactClassComponent();
-// console.log(newNode.format());
+import { DemoEditor } from './DemoEditor';
+node = JsNode.fromModuleCode(`class Foo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.props.name = 'foo';
+    this.props.count = 42;
+    this.props.mystery = someVar;
+  }
+}`);
+node = new DemoEditor().edit(node);
+console.log(node.format());
 
 // Demo: add constructor
 // console.log(node.createConstructor().format());
 
 // Demo: bind web sockets
-import { AddWebSocket } from '../.atomist/editors/AddWebSocket';
-node = new AddWebSocket().editNode(JsNode.fromModuleCode('class Foo extends React.Component {}'), {
-  component: 'Foo',
-  address: 'localhost'
-});
-console.log(node.format());
+// import { AddWebSocket } from '../.atomist/editors/AddWebSocket';
+// node = new AddWebSocket().editNode(JsNode.fromModuleCode('class Foo extends React.Component {}'), {
+//   component: 'Foo',
+//   address: 'localhost'
+// });
+// console.log(node.format());
 
 // Demo: type guards
 // if (node.check(ClassDeclaration)) {

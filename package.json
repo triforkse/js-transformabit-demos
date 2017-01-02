@@ -6,8 +6,8 @@
     "build": "tsc",
     "test": "jest",
     "test-watch": "jest --watch",
-    "demo": "node ./build/src/DemoPrinter.js",
-    "demo-watch": "nodemon -e js ./build/src/DemoPrinter.js"
+    "demo": "node ./build/DemoPrinter.js",
+    "demo-watch": "nodemon -e js ./build/DemoPrinter.js"
   },
   "devDependencies": {
     "@atomist/rug": "^0.7.1",
