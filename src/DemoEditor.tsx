@@ -14,24 +14,48 @@ export class DemoEditor implements Transformation {
     return null;
   }
 
-  private inferType(root: GenericJsNode, identifier: js.Identifier) {
-    let memberExpressions = root
-      .findChildrenOfType(js.MemberExpression)
-      .map(node => node) as js.MemberExpression[];
-    for (let memberExpression of memberExpressions) {
-      const property = memberExpression.property();
-      if (property.check(js.Identifier) && property.name === identifier.name) {
-        const parent = memberExpression.ascend();
-        if (parent.check(js.AssignmentExpression)
-          && parent.format().indexOf(`this.props.${property.name} =`) === 0) {
-          const right = parent.right();
-          if (right.check(js.Literal)) {
-            return typeof right.value;
-          }
-        }
+  private inferTypeFromNode(right: GenericJsNode) {
+    if (right.check(js.ArrayExpression)) {
+      return 'array';
+    } else if (right.check(js.Literal)) {
+      return typeof right.value;
+    } else if (right.check(js.ObjectExpression)) {
+      return 'object';
+    } else if (right.check(js.FunctionExpression)) {
+      return 'func';
+    } else if (right.check(js.NewExpression)) {
+      return `instanceOf(${right.findFirstChildOfType(js.Identifier).name})`;
+    }
+  }
+
+  private inferTypeFromAssignment(assignment: js.AssignmentExpression, identifier: js.Identifier) {
+    const assignmentIdentifier = assignment.left()
+      .findFirstChildOfType(js.Identifier, node => node.name === identifier.name);
+    if (assignmentIdentifier) {
+      const isArray = assignment.left()
+        .findFirstChildOfType(js.MemberExpression, node => {
+          const property = node.property();
+          return property.check(js.Literal);
+        }, true);
+      if (isArray) {
+        return 'array';
+      } else {
+        return this.inferTypeFromNode(assignment.right());
       }
-    });
-    return 'any';
+    }
+  }
+
+  private inferType(root: GenericJsNode, identifier: js.Identifier) {
+    let assignments = root
+      .findChildrenOfType(js.AssignmentExpression)
+      .filter(node => node.left().findFirstChildOfType(js.MemberExpression) !== undefined)
+      .map(node => node) as js.AssignmentExpression[];
+    for (let assignment of assignments) {
+      const type = this.inferTypeFromAssignment(assignment, identifier);
+      if (type) {
+        return type;
+      }
+    }
   }
 
   edit(root: GenericJsNode): GenericJsNode {
@@ -41,7 +65,10 @@ export class DemoEditor implements Transformation {
         const property = memberExpression.property();
         if (property.check(js.Identifier)) {
           if (memberExpression.object().format() === "this.props") {
-            props[property.name] = this.inferType(root, property);
+            const type = this.inferType(root, property);
+            if (type) {
+              props[property.name] = type;
+            }
           }
         }
       });
@@ -49,7 +76,7 @@ export class DemoEditor implements Transformation {
         <js.Property key={name} kind='init'>
           <js.MemberExpression
             object={<js.MemberExpression object="React" property="PropTypes" /> as js.MemberExpression}
-            property={props[name]}
+            property={props[name] || 'any'}
             />
         </js.Property> as js.Property
       )
