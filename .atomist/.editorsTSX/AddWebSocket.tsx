@@ -169,7 +169,6 @@ export class AddWebSocket implements ProjectEditor, Transformation {
   private capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
-
 }
 
 const addWebSocketEditor = new AddWebSocket();
