@@ -1,21 +1,22 @@
 import {
+  JsCode,
   GenericJsNode,
   Transformation,
-  JsCode
+  TransformationParams,
+  inferPropType,
+  File
 } from 'js-transformabit';
 import * as js from 'js-transformabit/dist/JsCode';
-import { inferPropType } from 'js-transformabit/dist/PropTypes';
 
 export class DemoEditor implements Transformation {
-
-  edit(root: GenericJsNode): GenericJsNode {
-    root.findChildrenOfType(js.ReactClassComponent).forEach(component => {
+  editModule(file: File, params: TransformationParams): File {
+    file.findChildrenOfType(js.ReactClassComponent).forEach(component => {
       let props = {};
       component.findChildrenOfType(js.MemberExpression).forEach(memberExpression => {
         const property = memberExpression.property();
         if (property.check(js.Identifier)) {
           if (memberExpression.object().format() === 'this.props') {
-            const type = inferPropType(root, property.name);
+            const type = inferPropType(file, property.name);
             if (type) {
               props[property.name] = type;
             }
@@ -47,6 +48,6 @@ export class DemoEditor implements Transformation {
         </js.ExpressionStatement>
       );
     });
-    return root;
+    return file;
   }
 }

@@ -2,34 +2,20 @@ import { Project, File } from '@atomist/rug/model/Core';
 import { ProjectEditor } from '@atomist/rug/operations/ProjectEditor';
 import { Result, Status, Parameter } from '@atomist/rug/operations/RugOperation';
 
-import { JsNode, GenericJsNode } from 'js-transformabit/dist/JsNode';
 import * as js from 'js-transformabit/dist/JsCode';
+import { JsNode, GenericJsNode } from 'js-transformabit/dist/JsNode';
+import { Transformation, TransformationParams } from 'js-transformabit/dist/Transformation';
 
-import {ReactContext} from '../ReactContext';
+import { ReactContext } from '../ReactContext';
 
-// -----------------------------------------------------------------------------
-// These interfaces should actually be defined in ../ReactEditor.ts, but when
-// you actually try and import it will fracture all the exported symbols in
-// js-transformabit and fail miserably.
-// This is a problem with the way Rug handles CommonJS imports.
 // import { EditorParams, ReactEditor } from '../ReactEditor';
 
-export interface EditorParams {
-  [param: string]: string;
-}
-
-export interface ReactEditor extends ProjectEditor {
-  editNode(file: js.File, params: EditorParams): js.File;
-}
-
-// -----------------------------------------------------------------------------
-
-interface AddWebSocketParams extends EditorParams {
+interface AddWebSocketParams extends TransformationParams {
   component: string;
   address: string;
 };
 
-export class AddWebSocket implements ReactEditor {
+export class AddWebSocket implements ProjectEditor, Transformation {
   tags = ['websocket', 'react'];
   name = 'AddWebSocket';
   description = 'Adds a websocket to a React component';
@@ -64,7 +50,7 @@ export class AddWebSocket implements ReactEditor {
     return new Result(Status.Success);
   }
 
-  editNode(file: js.File, params: AddWebSocketParams): js.File {
+  editModule(file: js.File, params: AddWebSocketParams): js.File {
     const component = file
       .findFirstChildOfType(js.ReactClassComponent, node => node.id().name === params.component);
     if (component !== undefined) {
@@ -82,7 +68,7 @@ export class AddWebSocket implements ReactEditor {
   private exec(file: File, params: AddWebSocketParams) {
     try {
       let root = JsNode.fromModuleCode(file.content());
-      root = this.editNode(root, params);
+      root = this.editModule(root, params);
       if (root) {
         file.setContent(root.format());
       }
@@ -93,87 +79,87 @@ export class AddWebSocket implements ReactEditor {
 
   private addHandlers(ctor: js.MethodDefinition) {
     if (!this.hasMethod('onOpen', ctor)) {
-      ctor.insertAfter(new js.MethodDefinition().build({key: 'onOpen', kind: 'method' }, []));
+      ctor.insertAfter(new js.MethodDefinition().build({ key: 'onOpen', kind: 'method' }, []));
     }
-        if (!this.hasMethod('onMessage', ctor)) {
-      ctor.insertAfter(new js.MethodDefinition().build({key: 'onMessage', kind: 'method' }, []));
+    if (!this.hasMethod('onMessage', ctor)) {
+      ctor.insertAfter(new js.MethodDefinition().build({ key: 'onMessage', kind: 'method' }, []));
     }
     if (!this.hasMethod('onError', ctor)) {
-      ctor.insertAfter(new js.MethodDefinition().build({key: 'onError', kind: 'method' }, []));
+      ctor.insertAfter(new js.MethodDefinition().build({ key: 'onError', kind: 'method' }, []));
     }
 
   }
 
   private hasMethod(methodName: string, ctor: GenericJsNode): boolean {
-	  let root = ctor.findClosestParentOfType(js.ClassDeclaration);
-	  if (root === null) {
-		  return false;
-	  }
+    let root = ctor.findClosestParentOfType(js.ClassDeclaration);
+    if (root === null) {
+      return false;
+    }
 
-	  return root.findChildrenOfType(js.MethodDefinition).filter(md => {
+    return root.findChildrenOfType(js.MethodDefinition).filter(md => {
       const key = md.key();
       if (key.check(js.Identifier)) {
-			  return key.name === methodName;
-		  }
-		  return false;
-	 }).size() > 0;
+        return key.name === methodName;
+      }
+      return false;
+    }).size() > 0;
   }
 
   private addConnection(ctor: js.MethodDefinition, params: AddWebSocketParams) {
     const body = ctor.body();
     if (body.check(js.BlockStatement)) {
       body.appendStatement(this.connectionInitStatement(params));
-		  body.appendStatement(this.eventConnection('open'));
-	  	body.appendStatement(this.eventConnection('error'));
-		  body.appendStatement(this.eventConnection('error'));
+      body.appendStatement(this.eventConnection('open'));
+      body.appendStatement(this.eventConnection('error'));
+      body.appendStatement(this.eventConnection('error'));
 
     }
   }
 
   private connectionInitStatement(params: AddWebSocketParams): js.ExpressionStatement {
-	  return new js.ExpressionStatement().build({}, [
-		 new js.AssignmentExpression().build({}, [
-			new js.MemberExpression().build({object: 'this', property: 'connection'}, []),
-			new js.NewExpression().build({callee: 'WebSocket'}, [
-			  new js.Literal().build({value: 'wss://' + params.address}, [])
-			])
-		 ])
-	 ]);
+    return new js.ExpressionStatement().build({}, [
+      new js.AssignmentExpression().build({}, [
+        new js.MemberExpression().build({ object: 'this', property: 'connection' }, []),
+        new js.NewExpression().build({ callee: 'WebSocket' }, [
+          new js.Literal().build({ value: 'wss://' + params.address }, [])
+        ])
+      ])
+    ]);
   }
-/*
-  private hasInit(body: js.BlockStatement, params: AddWebSocketParams): boolean {
-    return body.findChildrenOfType(js.AssignmentExpression).filter(exp => {
-      const left = exp.left();
-      if (left.check(js.MemberExpression)) {
-        if (left.object.name !== "this" || left.property.name !== "connection") {
+  /*
+    private hasInit(body: js.BlockStatement, params: AddWebSocketParams): boolean {
+      return body.findChildrenOfType(js.AssignmentExpression).filter(exp => {
+        const left = exp.left();
+        if (left.check(js.MemberExpression)) {
+          if (left.object.name !== "this" || left.property.name !== "connection") {
+            return false;
+          }
+        } else {
           return false;
         }
-      } else {
-        return false;
-      }
-      const right = exp.right();
-      if (right.check(js.NewExpression)) {
-        this.project.println(right.callee().children().at(0).format());
-      } else {
-        return false;
-      }
+        const right = exp.right();
+        if (right.check(js.NewExpression)) {
+          this.project.println(right.callee().children().at(0).format());
+        } else {
+          return false;
+        }
 
-      return false;
-    }).size() > 0;
-  }
-*/
+        return false;
+      }).size() > 0;
+    }
+  */
   private eventConnection(event: string): js.ExpressionStatement {
-	  let thisConnection = new js.MemberExpression().build({object: 'this', property: 'connection'}, []);
-	  let leftHand = new js.MemberExpression().build({object: thisConnection, property: 'on' + this.capitalizeFirstLetter(event)}, []);
-	  let rightHand = new js.MemberExpression().build({object: 'this', property: 'on' + this.capitalizeFirstLetter(event)}, []);
-	  return new js.ExpressionStatement().build({}, [
-		  new js.AssignmentExpression().build({}, [leftHand, rightHand])
-	  	]);
+    let thisConnection = new js.MemberExpression().build({ object: 'this', property: 'connection' }, []);
+    let leftHand = new js.MemberExpression().build({ object: thisConnection, property: 'on' + this.capitalizeFirstLetter(event) }, []);
+    let rightHand = new js.MemberExpression().build({ object: 'this', property: 'on' + this.capitalizeFirstLetter(event) }, []);
+    return new js.ExpressionStatement().build({}, [
+      new js.AssignmentExpression().build({}, [leftHand, rightHand])
+    ]);
   }
 
-	private capitalizeFirstLetter(string: string) {
-		return string.charAt(0).toUpperCase() + string.slice(1);
-	}
+  private capitalizeFirstLetter(string: string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 
 }
 

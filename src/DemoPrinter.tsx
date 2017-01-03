@@ -21,35 +21,8 @@ let node: GenericJsNode;
 // Demo: finding complex components
 // console.log(node.findFirstChildOfType(ReactComponentRender).format());
 
-// Demo: editor
-import { DemoEditor } from './DemoEditor';
-node = JsNode.fromModuleCode(`class Foo extends React.Component {
-  constructor(props) {
-    super(props);
-    this.props.name = 'foo';
-    this.props.count = 42;
-    this.props.hasName = true;
-    this.props.data = {foo: 'bar'};
-    this.props.nameList[23] = 'bob'
-    this.props.otherNames = ['bob', 'alice'];
-    this.props.makeName = function() { return 'bob' };
-    this.props.nameFactory = new NameFactory();
-    this.props.mystery = someVar;
-  }
-}`);
-node = new DemoEditor().edit(node);
-console.log(node.format());
-
 // Demo: add constructor
 // console.log(node.createConstructor().format());
-
-// Demo: bind web sockets
-// import { AddWebSocket } from '../.atomist/editors/AddWebSocket';
-// node = new AddWebSocket().editNode(JsNode.fromModuleCode('class Foo extends React.Component {}'), {
-//   component: 'Foo',
-//   address: 'localhost'
-// });
-// console.log(node.format());
 
 // Demo: type guards
 // if (node.check(ClassDeclaration)) {
@@ -64,3 +37,30 @@ console.log(node.format());
 
 // Demo: type specific methods
 // console.log(node.getRenderMethod().format());
+
+// Demo: editor
+// import { DemoEditor } from './DemoEditor';
+// const file = JsNode.fromModuleCode(`class Foo extends React.Component {
+//   constructor(props) {
+//     super(props);
+//     this.props.name = 'foo';
+//     this.props.count = 42;
+//     this.props.hasName = true;
+//     this.props.data = {foo: 'bar'};
+//     this.props.nameList[23] = 'bob'
+//     this.props.otherNames = ['bob', 'alice'];
+//     this.props.makeName = function() { return 'bob' };
+//     this.props.nameFactory = new NameFactory();
+//     this.props.mystery = someVar;
+//   }
+// }`);
+// new DemoEditor().editModule(file, {});
+// console.log(file.format());
+
+// Demo: bind web sockets
+import { AddWebSocket } from '../.atomist/editors/AddWebSocket';
+node = new AddWebSocket().editModule(JsNode.fromModuleCode('class Foo extends React.Component {}'), {
+  component: 'Foo',
+  address: 'localhost'
+});
+console.log(node.format());
