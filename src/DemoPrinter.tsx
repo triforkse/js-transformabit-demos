@@ -40,27 +40,36 @@ let node: GenericJsNode;
 
 // Demo: editor
 // import { DemoEditor } from './DemoEditor';
-// const file = JsNode.fromModuleCode(`class Foo extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.props.name = 'foo';
-//     this.props.count = 42;
-//     this.props.hasName = true;
-//     this.props.data = {foo: 'bar'};
-//     this.props.nameList[23] = 'bob'
-//     this.props.otherNames = ['bob', 'alice'];
-//     this.props.makeName = function() { return 'bob' };
-//     this.props.nameFactory = new NameFactory();
-//     this.props.mystery = someVar;
-//   }
-// }`);
+// const file = JsNode.fromModuleCode(`class Foo extends React.Component {}`);
 // new DemoEditor().editModule(file, {});
 // console.log(file.format());
 
+// Demo: add prop types
+import { AddPropTypes } from './AddPropTypes';
+const file = JsNode.fromModuleCode(`class Foo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.props.name = 'foo';
+    this.props.count = 42;
+    this.props.hasName = true;
+    this.props.data = {foo: 'bar'};
+    this.props.nameList[23] = 'bob'
+    this.props.otherNames = ['bob', 'alice'];
+    this.props.makeName = function() { return 'bob' };
+    this.props.nameFactory = new NameFactory();
+    this.props.mystery = someVar;
+  }
+}`);
+new AddPropTypes().editModule(file, {});
+console.log(file.format());
+
 // Demo: bind web sockets
-import { AddWebSocket } from '../.atomist/editors/AddWebSocket';
-node = new AddWebSocket().editModule(JsNode.fromModuleCode('class Foo extends React.Component {}'), {
-  component: 'Foo',
-  address: 'localhost'
-});
-console.log(node.format());
+// import { AddWebSocket } from '../.atomist/editors/AddWebSocket';
+// node = new AddWebSocket().editModule(
+//   JsNode.fromModuleCode('class Foo extends React.Component {}'),
+//   {
+//     component: 'Foo',
+//     address: 'localhost'
+//   }
+// );
+// console.log(node.format());
