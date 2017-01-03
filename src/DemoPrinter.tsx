@@ -59,6 +59,14 @@ const file = JsNode.fromModuleCode(`class Foo extends React.Component {
     this.props.nameFactory = new NameFactory();
     this.props.mystery = someVar;
   }
+
+  foo() {
+    if (this.props.binaryCount <= 20) {
+      return;
+    } else if (this.props.binaryCount === undefined) {
+      return;
+    }
+  }
 }`);
 new AddPropTypes().editModule(file, {});
 console.log(file.format());

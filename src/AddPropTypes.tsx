@@ -16,6 +16,10 @@ export class AddPropTypes implements Transformation {
         const property = memberExpression.property();
         if (property.check(js.Identifier)) {
           if (memberExpression.object().format() === 'this.props') {
+            if (props[property.name] === undefined) {
+              // Register the property name, even if the type can't be inferred
+              props[property.name] = null;
+            }
             const type = inferPropType(file, property.name);
             if (type) {
               props[property.name] = type;
