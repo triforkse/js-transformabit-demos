@@ -2,6 +2,9 @@ import * as path from 'path';
 import { Project, File } from '@atomist/rug/model/Core';
 import { ProjectContext } from '@atomist/rug/operations/ProjectEditor';
 
+import 'colors';
+const jsdiff = require('diff');
+
 class NodeProjectBase implements Project {
   nodeName(): String {
     return '';
@@ -174,8 +177,13 @@ export class VirtualNodeFile extends NodeFileBase {
   }
 
   print() {
-    console.log(' == ' + this.path() + ' ========================================');
-    console.log(this.content());
+    console.log('=== ' + this.path() + ' ========================================');
+    if (this.modifiedContents) {
+      for (const part of jsdiff.diffLines(this.initialContents, this.modifiedContents)) {
+        const color = part.added ? 'green' : part.removed ? 'red' : 'grey';
+        process.stdout.write(part.value[color] + '\n');
+      }
+    }
   }
 }
 

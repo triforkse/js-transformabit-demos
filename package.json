@@ -13,7 +13,9 @@
     "@atomist/rug": "^0.7.1",
     "@types/jest": "^16.0.3",
     "@types/node": "^6.0.54",
+    "colors": "^1.1.2",
     "jest": "^18.1.0",
+    "jsdiff": "^1.1.1",
     "nodemon": "^1.11.0",
     "tslint": "^4.2.0"
   }
