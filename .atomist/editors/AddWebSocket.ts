@@ -35,7 +35,7 @@ export class AddWebSocket {
     edit(project, params) {
         this.project = project;
         let rc = new ReactContext(project);
-        rc.jsFiles().forEach(file => this.exec(file, params));
+        rc.jsFiles().forEach(file => this.editFile(file, params));
         return new Result(Status.Success);
     }
     editModule(file, params) {
@@ -52,7 +52,7 @@ export class AddWebSocket {
         }
         return file;
     }
-    exec(file, params) {
+    editFile(file, params) {
         try {
             let root = JsNode.fromModuleCode(file.content());
             root = this.editModule(root, params);

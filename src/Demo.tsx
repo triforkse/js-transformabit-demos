@@ -46,38 +46,42 @@ let node: GenericJsNode;
 // console.log(file.format());
 
 // Demo: add prop types
-// import { AddPropTypes } from './AddPropTypes';
-// const file = JsNode.fromModuleCode(`class Foo extends React.Component {
-//   constructor(props) {
-//     super(props);
-//     this.props.name = 'foo';
-//     this.props.count = 42;
-//     this.props.hasName = true;
-//     this.props.data = {foo: 'bar'};
-//     this.props.nameList[23] = 'bob'
-//     this.props.otherNames = ['bob', 'alice'];
-//     this.props.makeName = function() { return 'bob' };
-//     this.props.nameFactory = new NameFactory();
-//     this.props.mystery = someVar;
-//   }
-
-//   foo() {
-//     if (this.props.binaryCount <= 20) {
-//       return;
-//     } else if (this.props.binaryCount === undefined) {
-//       return;
-//     }
-//   }
-// }`);
-// new AddPropTypes().editModule(file, {});
-// console.log(file.format());
-
-// Demo: bind web sockets
-import { AddWebSocket } from '../.atomist/.editorsTSX/AddWebSocket';
+import { AddPropTypes } from '../.atomist/.editorsTSX/AddPropTypes';
 const project = new VirtualNodeProject();
-project.addInitialFile('/foo.js', 'class Foo extends React.Component {}');
-new AddWebSocket().edit(project, {
-  component: 'Foo',
-  address: 'localhost'
+project.addInitialFile('/foo.js',
+`class Foo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.props.name = 'foo';
+    this.props.count = 42;
+    this.props.hasName = true;
+    this.props.data = {foo: 'bar'};
+    this.props.nameList[23] = 'bob'
+    this.props.otherNames = ['bob', 'alice'];
+    this.props.makeName = function() { return 'bob' };
+    this.props.nameFactory = new NameFactory();
+    this.props.mystery = someVar;
+  }
+
+  foo() {
+    if (this.props.binaryCount <= 20) {
+      return;
+    } else if (this.props.binaryCount === undefined) {
+      return;
+    }
+  }
+}`);
+new AddPropTypes().edit(project, {
+  component: 'Foo'
 });
 project.print();
+
+// Demo: bind web sockets
+// import { AddWebSocket } from '../.atomist/.editorsTSX/AddWebSocket';
+// const project = new VirtualNodeProject();
+// project.addInitialFile('/foo.js', 'class Foo extends React.Component {}');
+// new AddWebSocket().edit(project, {
+//   component: 'Foo',
+//   address: 'localhost'
+// });
+// project.print();

@@ -179,9 +179,11 @@ export class VirtualNodeFile extends NodeFileBase {
   print() {
     console.log('=== ' + this.path() + ' ========================================');
     if (this.modifiedContents) {
-      for (const part of jsdiff.diffLines(this.initialContents, this.modifiedContents)) {
+      for (const part of jsdiff.diffLines(this.initialContents, this.modifiedContents, {
+        newlineIsToken: true
+      })) {
         const color = part.added ? 'green' : part.removed ? 'red' : 'grey';
-        process.stdout.write(part.value[color] + '\n');
+        console.log(part.value[color] + '\n');
       }
     }
   }

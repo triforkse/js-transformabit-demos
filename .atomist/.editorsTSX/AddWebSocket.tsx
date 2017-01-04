@@ -48,7 +48,7 @@ export class AddWebSocket implements ProjectEditor, Transformation {
   edit(project: Project, params: AddWebSocketParams): Result {
     this.project = project;
     let rc = new ReactContext(project);
-    rc.jsFiles().forEach(file => this.exec(file, params));
+    rc.jsFiles().forEach(file => this.editFile(file, params));
     return new Result(Status.Success);
   }
 
@@ -67,7 +67,7 @@ export class AddWebSocket implements ProjectEditor, Transformation {
     return file;
   }
 
-  private exec(file: File, params: AddWebSocketParams) {
+  private editFile(file: File, params: AddWebSocketParams) {
     try {
       let root = JsNode.fromModuleCode(file.content());
       root = this.editModule(root, params);

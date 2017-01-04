@@ -1,0 +1,46 @@
+scenario AddPropTypes
+
+let source = """class Foo extends React.Component {
+  constructor(props) {
+    super(props);
+    this.props.name = 'foo';
+    this.props.count = 42;
+    this.props.hasName = true;
+    this.props.data = {foo: 'bar'};
+    this.props.nameList[23] = 'bob'
+    this.props.otherNames = ['bob', 'alice'];
+    this.props.makeName = function() { return 'bob' };
+    this.props.nameFactory = new NameFactory();
+    this.props.mystery = someVar;
+  }
+
+  foo() {
+    if (this.props.binaryCount <= 20) {
+      return;
+    } else if (this.props.binaryCount === undefined) {
+      return;
+    }
+  }
+}"""
+
+given
+  "test.js" = source
+
+when
+  AddPropTypes
+
+then
+  fileContains "test.js" source + """
+
+Foo.propTypes = {
+  name: React.PropTypes.string,
+  count: React.PropTypes.number,
+  hasName: React.PropTypes.boolean,
+  data: React.PropTypes.object,
+  nameList: React.PropTypes.array,
+  otherNames: React.PropTypes.array,
+  makeName: React.PropTypes.func,
+  nameFactory: React.PropTypes.instanceOf(NameFactory),
+  mystery: React.PropTypes.any,
+  binaryCount: React.PropTypes.number
+};"""
