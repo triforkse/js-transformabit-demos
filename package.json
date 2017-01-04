@@ -6,14 +6,15 @@
     "build": "tsc",
     "test": "jest",
     "test-watch": "jest --watch",
-    "demo": "node ./build/DemoPrinter.js",
-    "demo-watch": "nodemon -e js ./build/DemoPrinter.js"
+    "demo": "node ./build/src/Demo.js",
+    "demo-watch": "nodemon -e js ./build/src/Demo.js"
   },
   "devDependencies": {
     "@atomist/rug": "^0.7.1",
     "@types/jest": "^16.0.3",
     "@types/node": "^6.0.54",
     "jest": "^18.1.0",
-    "nodemon": "^1.11.0"
+    "nodemon": "^1.11.0",
+    "tslint": "^4.2.0"
   }
 }

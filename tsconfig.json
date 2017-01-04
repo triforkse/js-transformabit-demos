@@ -1,13 +1,14 @@
 {
   "compileOnSave": true,
   "compilerOptions": {
+    "rootDir": ".",
     "outDir": "./build/",
     "target": "es5",
     "jsx": "react",
     "experimentalDecorators": true,
     "reactNamespace": "JsCode"
   },
-  "include": [
-    "src/**/*"
+  "files": [
+    "./src/Demo.tsx"
   ]
 }
