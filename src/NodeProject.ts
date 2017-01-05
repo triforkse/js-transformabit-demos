@@ -1,3 +1,4 @@
+import * as fs from 'fs';
 import * as path from 'path';
 import { Project, File } from '@atomist/rug/model/Core';
 import { ProjectContext } from '@atomist/rug/operations/ProjectEditor';
@@ -149,10 +150,17 @@ export class VirtualNodeFile extends NodeFileBase {
   modifiedContents: string;
   initialPath: string;
   modifiedPath: string;
+  filePath: string;
 
-  constructor(filePath: string, contents: string) {
+  static fromExistingFile(filePath: string, virtualRoot: string): VirtualNodeFile {
+    const file = new VirtualNodeFile(path.join(virtualRoot, path.basename(filePath)), null);
+    file.filePath = filePath;
+    return file;
+  }
+
+  constructor(virtualPath: string, contents: string) {
     super();
-    this.initialPath = filePath;
+    this.initialPath = virtualPath;
     this.initialContents = contents;
   }
 
@@ -168,18 +176,26 @@ export class VirtualNodeFile extends NodeFileBase {
     return path.basename(this.path());
   }
 
+  initialContent() {
+    return this.filePath ? fs.readFileSync(this.filePath).toString() : this.initialContents;
+  }
+
   content() {
-    return this.modifiedContents || this.initialContents;
+    return this.modifiedContents || this.initialContent();
   }
 
   setContent(value: string) {
     this.modifiedContents = value;
   }
 
+  wasModified() {
+    return this.modifiedPath !== undefined;
+  }
+
   print() {
-    console.log('=== ' + this.path() + ' ========================================');
-    if (this.modifiedContents) {
-      for (const part of jsdiff.diffLines(this.initialContents, this.modifiedContents, {
+    if (this.wasModified()) {
+      console.log('=== ' + this.path() + ' ========================================');
+      for (const part of jsdiff.diffLines(this.initialContent(), this.modifiedContents, {
         newlineIsToken: true
       })) {
         const color = part.added ? 'green' : part.removed ? 'red' : 'grey';
@@ -192,16 +208,20 @@ export class VirtualNodeFile extends NodeFileBase {
 export class VirtualNodeProject extends NodeProjectBase {
   virtualFiles: {[path: string]: VirtualNodeFile} = {};
 
+  static fromExistingApp(root: string): VirtualNodeProject {
+    return null;
+  }
+
   addInitialFile(filePath: string, contents: string) {
     const file = new VirtualNodeFile(filePath, contents)
     this.virtualFiles[file.path()] = file;
   }
 
   files() {
-    return Object.keys(this.virtualFiles).map(key => this.virtualFiles[key]);
+    return <File[]>Object.keys(this.virtualFiles).map(key => this.virtualFiles[key]);
   }
 
   print() {
-    this.files().forEach(file => file.print());
+    this.files().forEach(file => (<VirtualNodeFile>file).print());
   }
 }
