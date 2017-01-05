@@ -89,7 +89,6 @@ export class AddWebSocket implements ProjectEditor, Transformation {
     if (!this.hasMethod('onError', ctor)) {
       ctor.insertAfter(new js.MethodDefinition().build({ key: 'onError', kind: 'method' }, []));
     }
-
   }
 
   private hasMethod(methodName: string, ctor: GenericJsNode): boolean {

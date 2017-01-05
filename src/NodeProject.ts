@@ -152,8 +152,8 @@ export class VirtualNodeFile extends NodeFileBase {
   modifiedPath: string;
   filePath: string;
 
-  static fromExistingFile(filePath: string, virtualRoot: string): VirtualNodeFile {
-    const file = new VirtualNodeFile(path.join(virtualRoot, path.basename(filePath)), null);
+  static fromExistingFile(filePath: string, virtualPath: string): VirtualNodeFile {
+    const file = new VirtualNodeFile(virtualPath, null);
     file.filePath = filePath;
     return file;
   }
@@ -185,11 +185,13 @@ export class VirtualNodeFile extends NodeFileBase {
   }
 
   setContent(value: string) {
-    this.modifiedContents = value;
+    if (this.content() !== value) {
+      this.modifiedContents = value;
+    }
   }
 
   wasModified() {
-    return this.modifiedPath !== undefined;
+    return this.modifiedContents !== undefined;
   }
 
   print() {
@@ -208,8 +210,15 @@ export class VirtualNodeFile extends NodeFileBase {
 export class VirtualNodeProject extends NodeProjectBase {
   virtualFiles: {[path: string]: VirtualNodeFile} = {};
 
-  static fromExistingApp(root: string): VirtualNodeProject {
-    return null;
+  addExistingApp(root: string) {
+    for (const item of fs.readdirSync(root)) {
+      const itemPath = path.join(root, item);
+      if (fs.statSync(itemPath).isFile()) {
+        const virtualPath = path.join('/', path.basename(itemPath));
+        this.virtualFiles[virtualPath] = VirtualNodeFile.fromExistingFile(itemPath, virtualPath);
+        console.log(`Created virtual copy of "${item}"`);
+      }
+    }
   }
 
   addInitialFile(filePath: string, contents: string) {
