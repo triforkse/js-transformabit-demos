@@ -78,8 +78,7 @@ let node: GenericJsNode;
 
 // Demo: bind web sockets
 import { AddWebSocket } from '../.atomist/.editorsTSX/AddWebSocket';
-const project = new VirtualNodeProject();
-project.addExistingApp('./sample_app_src');
+const project = VirtualNodeProject.fromExistingApp('./sample_app_src');
 new AddWebSocket().edit(project, {
   component: 'App',
   address: 'localhost'

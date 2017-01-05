@@ -210,6 +210,12 @@ export class VirtualNodeFile extends NodeFileBase {
 export class VirtualNodeProject extends NodeProjectBase {
   virtualFiles: {[path: string]: VirtualNodeFile} = {};
 
+  static fromExistingApp(root: string) {
+    const project = new VirtualNodeProject();
+    project.addExistingApp(root);
+    return project;
+  }
+
   addExistingApp(root: string) {
     for (const item of fs.readdirSync(root)) {
       const itemPath = path.join(root, item);
