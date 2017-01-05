@@ -1,5 +1,4 @@
 {
-  "compileOnSave": true,
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "./build/",
@@ -8,7 +7,7 @@
     "experimentalDecorators": true,
     "reactNamespace": "JsCode"
   },
-  "files": [
-    "./src/Demo.tsx"
+  "include": [
+    "editors"
   ]
 }
