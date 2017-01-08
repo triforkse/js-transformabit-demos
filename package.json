@@ -12,12 +12,12 @@
   "devDependencies": {
     "@atomist/rug": "^0.7.1",
     "@types/jest": "^16.0.3",
-    "@types/node": "^6.0.54",
+    "@types/node": "^6.0.58",
     "colors": "^1.1.2",
     "jest": "^18.1.0",
-    "js-transformabit": "^0.1.0",
+    "js-transformabit": "^0.1.1",
     "jsdiff": "^1.1.1",
     "nodemon": "^1.11.0",
-    "tslint": "^4.2.0"
+    "tslint": "^4.3.1"
   }
 }

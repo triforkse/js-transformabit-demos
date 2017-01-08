@@ -10,9 +10,9 @@
   version "16.0.3"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-16.0.3.tgz#28a465586cd37d2638043ebcca91010ed89fc284"
 
-"@types/node@^6.0.54":
-  version "6.0.55"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.55.tgz#e5cb679a43561f42afd1bd6d58d3992ec8f31720"
+"@types/node@^6.0.58":
+  version "6.0.58"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.58.tgz#7b3b7065f3cdf24e2349d35b68d2795cfa874553"
 
 abab@^1.0.0:
   version "1.0.3"
@@ -1478,9 +1478,9 @@ js-tokens@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-2.0.0.tgz#79903f5563ee778cc1162e6dcf1a0027c97f9cb5"
 
-js-transformabit@^0.1.0:
-  version "0.1.0"
-  resolved "https://registry.yarnpkg.com/js-transformabit/-/js-transformabit-0.1.0.tgz#1b9badd7b8ff340165e22410afffb7e8eec01015"
+js-transformabit@^0.1.1:
+  version "0.1.1"
+  resolved "https://registry.yarnpkg.com/js-transformabit/-/js-transformabit-0.1.1.tgz#b3801916760b8f67e2403c80529ea82f21f32a15"
 
 js-yaml@^3.7.0:
   version "3.7.0"
@@ -2545,9 +2545,9 @@ tr46@~0.0.3:
   version "0.0.3"
   resolved "https://registry.yarnpkg.com/tr46/-/tr46-0.0.3.tgz#8184fd347dac9cdc185992f3a6622e14b9d9ab6a"
 
-tslint@^4.2.0:
-  version "4.2.0"
-  resolved "https://registry.yarnpkg.com/tslint/-/tslint-4.2.0.tgz#b9f5c5b871b784ab2f4809e704ade42d62f523ad"
+tslint@^4.3.1:
+  version "4.3.1"
+  resolved "https://registry.yarnpkg.com/tslint/-/tslint-4.3.1.tgz#28f679c53ca4b273688bcb6fcf0dde7ff1bb2169"
   dependencies:
     babel-code-frame "^6.20.0"
     colors "^1.1.2"
