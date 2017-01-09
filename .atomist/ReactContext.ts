@@ -1,6 +1,5 @@
 import { Project, File } from '@atomist/rug/model/Core';
 
-
 export class ReactContext {
 
   private project: Project;

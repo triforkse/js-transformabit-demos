@@ -10,7 +10,7 @@
     "demo-watch": "nodemon -e js ./build/src/Demo.js"
   },
   "devDependencies": {
-    "@atomist/rug": "^0.7.1",
+    "@atomist/rug": "^0.8.0",
     "@types/jest": "^16.0.3",
     "@types/node": "^6.0.58",
     "colors": "^1.1.2",

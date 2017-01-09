@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"@atomist/rug@^0.7.1":
-  version "0.7.1"
-  resolved "https://registry.yarnpkg.com/@atomist/rug/-/rug-0.7.1.tgz#b4730ddcaaba61bf3b922b0b60c3ff141f42d52a"
+"@atomist/rug@^0.8.0":
+  version "0.8.0"
+  resolved "https://registry.yarnpkg.com/@atomist/rug/-/rug-0.8.0.tgz#50733b1d3cca5ad36f8984dfa4d444981792463b"
 
 "@types/jest@^16.0.3":
   version "16.0.3"
