@@ -77,10 +77,16 @@ let node: GenericJsNode;
 // project.print();
 
 // Demo: bind web sockets
-import { AddWebSocket } from '../.atomist/.editorsTSX/AddWebSocket';
+// import { AddWebSocket } from '../.atomist/.editorsTSX/AddWebSocket';
+// const project = VirtualNodeProject.fromExistingApp('./sample_app_src');
+// new AddWebSocket().edit(project, {
+//   component: 'App',
+//   address: 'localhost'
+// });
+// project.print();
+
+// Demo: bind web sockets
+import { AddUnitTestForReactComponent } from '../.atomist/editors/AddUnitTestForReactComponent';
 const project = VirtualNodeProject.fromExistingApp('./sample_app_src');
-new AddWebSocket().edit(project, {
-  component: 'App',
-  address: 'localhost'
-});
+new AddUnitTestForReactComponent().edit(project, {});
 project.print();

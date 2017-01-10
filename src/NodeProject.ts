@@ -228,7 +228,13 @@ export class VirtualNodeProject extends NodeProjectBase {
   }
 
   addInitialFile(filePath: string, contents: string) {
-    const file = new VirtualNodeFile(filePath, contents)
+    const file = new VirtualNodeFile(filePath, contents);
+    this.virtualFiles[file.path()] = file;
+  }
+
+  addFile(filePath: string, content: string) {
+    const file = new VirtualNodeFile(filePath, '');
+    file.setContent(content);
     this.virtualFiles[file.path()] = file;
   }
 
