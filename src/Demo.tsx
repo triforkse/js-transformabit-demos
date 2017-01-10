@@ -39,12 +39,6 @@ let node: GenericJsNode;
 // Demo: type specific methods
 // console.log(node.getRenderMethod().format());
 
-// Demo: editor
-// import { DemoEditor } from './DemoEditor';
-// const file = JsNode.fromModuleCode(`class Foo extends React.Component {}`);
-// new DemoEditor().editModule(file, {});
-// console.log(file.format());
-
 // Demo: add prop types
 // import { AddPropTypes } from '../.atomist/.editorsTSX/AddPropTypes';
 // const project = new VirtualNodeProject();

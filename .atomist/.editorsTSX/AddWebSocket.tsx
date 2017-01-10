@@ -4,7 +4,6 @@ import { Result, Status, Parameter } from '@atomist/rug/operations/RugOperation'
 
 import * as js from 'js-transformabit/dist/JsCode';
 import { JsNode, GenericJsNode } from 'js-transformabit/dist/JsNode';
-import { Transformation, TransformationParams } from 'js-transformabit/dist/Transformation';
 
 import { ReactContext } from '../ReactContext';
 
@@ -12,12 +11,12 @@ const JsCode = js.JsCode;
 
 // import { EditorParams, ReactEditor } from '../ReactEditor';
 
-interface AddWebSocketParams extends TransformationParams {
+interface AddWebSocketParams {
   component: string;
   address: string;
 };
 
-export class AddWebSocket implements ProjectEditor, Transformation {
+export class AddWebSocket implements ProjectEditor {
   tags = ['websocket', 'react'];
   name = 'AddWebSocket';
   description = 'Adds a websocket to a React component';
@@ -48,7 +47,17 @@ export class AddWebSocket implements ProjectEditor, Transformation {
   edit(project: Project, params: AddWebSocketParams): Result {
     this.project = project;
     let rc = new ReactContext(project);
-    rc.jsFiles().forEach(file => this.editFile(file, params));
+    rc.jsFiles().forEach(file => {
+      try {
+        let root = JsNode.fromModuleCode(file.content());
+        root = this.editModule(root, params);
+        if (root) {
+          file.setContent(root.format());
+        }
+      } catch (error) {
+        this.project.println(error.toString());
+      }
+    });
     return new Result(Status.Success);
   }
 
@@ -65,18 +74,6 @@ export class AddWebSocket implements ProjectEditor, Transformation {
       this.addConnection(ctor, params);
     }
     return file;
-  }
-
-  private editFile(file: File, params: AddWebSocketParams) {
-    try {
-      let root = JsNode.fromModuleCode(file.content());
-      root = this.editModule(root, params);
-      if (root) {
-        file.setContent(root.format());
-      }
-    } catch (error) {
-      this.project.println(error.toString());
-    }
   }
 
   private addHandlers(ctor: js.MethodDefinition) {

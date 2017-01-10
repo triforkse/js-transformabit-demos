@@ -4,17 +4,16 @@ import { Result, Status, Parameter } from '@atomist/rug/operations/RugOperation'
 
 import * as js from 'js-transformabit/dist/JsCode';
 import { JsNode, GenericJsNode } from 'js-transformabit/dist/JsNode';
-import { Transformation, TransformationParams } from 'js-transformabit/dist/Transformation';
 import { inferPropType } from 'js-transformabit/dist/PropTypes';
 
 import { ReactContext } from '../ReactContext';
 
 const JsCode = js.JsCode;
-interface AddPropTypesParams extends TransformationParams {
+interface AddPropTypesParams {
   component: string;
 };
 
-export class AddPropTypes implements Transformation {
+export class AddPropTypes implements ProjectEditor {
   tags = ['proptypes', 'react'];
   name = 'AddPropTypes';
   description = 'Adds a PropTypes to a React component';
@@ -45,23 +44,21 @@ export class AddPropTypes implements Transformation {
   edit(project: Project, params: AddPropTypesParams): Result {
     this.project = project;
     let rc = new ReactContext(project);
-    rc.jsFiles().forEach(file => this.editFile(file, params));
+    rc.jsFiles().forEach(file => {
+      try {
+        let root = JsNode.fromModuleCode(file.content());
+        root = this.editModule(root, params);
+        if (root) {
+          file.setContent(root.format());
+        }
+      } catch (error) {
+        this.project.println(error.toString());
+      }
+    });
     return new Result(Status.Success);
   }
 
-  private editFile(file: File, params: AddPropTypesParams) {
-    try {
-      let root = JsNode.fromModuleCode(file.content());
-      root = this.editModule(root, params);
-      if (root) {
-        file.setContent(root.format());
-      }
-    } catch (error) {
-      this.project.println(error.toString());
-    }
-  }
-
-  editModule(file: js.File, params: TransformationParams): js.File {
+  editModule(file: js.File, params: AddPropTypesParams): js.File {
     file.findChildrenOfType(js.ReactClassComponent).forEach(component => {
       let props = {};
       component.findChildrenOfType(js.MemberExpression).forEach(memberExpression => {

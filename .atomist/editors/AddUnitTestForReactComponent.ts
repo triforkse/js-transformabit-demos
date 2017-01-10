@@ -8,7 +8,7 @@ import { JsNode, GenericJsNode } from 'js-transformabit/dist/JsNode';
 import { ReactContext } from '../ReactContext';
 
 export class AddUnitTestForReactComponent implements ProjectEditor {
-  tags = ['websocket', 'react'];
+  tags = ['react'];
   name = 'AddUnitTestForReactComponent';
   description = 'Creates a minimal unit test for React components.';
   parameters: Parameter[] = [];

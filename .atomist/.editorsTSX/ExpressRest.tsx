@@ -4,32 +4,42 @@ import { Result, Status, Parameter } from '@atomist/rug/operations/RugOperation'
 
 import * as js from 'js-transformabit/dist/JsCode';
 import { JsNode, GenericJsNode } from 'js-transformabit/dist/JsNode';
-import { Transformation, TransformationParams } from 'js-transformabit/dist/Transformation';
 
 import { ReactContext } from '../ReactContext';
 
 const JsCode = js.JsCode;
 
-interface ExpressRestParams extends TransformationParams {
+interface ExpressRestParams {
   uri: string;
 };
 
-export class ExpressRest implements Transformation {
+export class ExpressRest implements ProjectEditor {
+  tags = ['express'];
+  name = 'ExpressRest';
+  description = 'TODO';
+  parameters: Parameter[] = [
+    {
+      name: 'uri',
+      required: true,
+      description: 'URI',
+      displayName: 'URI',
+      validInput: 'URI',
+      pattern: '^.+$'
+    }
+  ];
   project: Project;
 
   edit(project: Project, params: ExpressRestParams): Result {
     this.project = project;
     let rc = new ReactContext(project);
-    rc.jsFiles().forEach(file => this.editFile(file, params));
+    rc.jsFiles().forEach(file => {
+      let root = JsNode.fromModuleCode(file.content());
+      root = this.editModule(root, params);
+      if (root) {
+        file.setContent(root.format());
+      }
+    });
     return new Result(Status.Success);
-  }
-
-  private editFile(file: File, params: ExpressRestParams) {
-    let root = JsNode.fromModuleCode(file.content());
-    root = this.editModule(root, params);
-    if (root) {
-      file.setContent(root.format());
-    }
   }
 
   editModule(file: js.File, params: ExpressRestParams): js.File {
