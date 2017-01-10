@@ -11,8 +11,7 @@ import { ReactContext } from '../ReactContext';
 const JsCode = js.JsCode;
 
 interface ExpressRestParams extends TransformationParams {
-  component: string;
-  address: string;
+  uri: string;
 };
 
 export class ExpressRest implements Transformation {
@@ -26,35 +25,64 @@ export class ExpressRest implements Transformation {
   }
 
   private editFile(file: File, params: ExpressRestParams) {
-    try {
-      let root = JsNode.fromModuleCode(file.content());
-      root = this.editModule(root, params);
-      if (root) {
-        file.setContent(root.format());
-      }
-    } catch (error) {
-      this.project.println(error.toString());
+    let root = JsNode.fromModuleCode(file.content());
+    root = this.editModule(root, params);
+    if (root) {
+      file.setContent(root.format());
     }
   }
 
-  editModule(file: js.File, params: TransformationParams): js.File {
+  editModule(file: js.File, params: ExpressRestParams): js.File {
     const expressId = this.getExpressIdentifier(file);
-    this.getListenInvoke(file, expressId);
+    const listenFunc = this.getListenInvoke(file, expressId);
+
+    listenFunc.insertBefore(
+      <js.ExpressionStatement>
+        <js.CallExpression callee={expressId.name + ".get"}>
+          <js.Literal value={params.uri}/>
+          <js.FunctionExpression>
+            <js.Identifier name="req"/>
+            <js.Identifier name="res"/>
+            <js.BlockStatement>
+            </js.BlockStatement>
+          </js.FunctionExpression>
+        </js.CallExpression>
+      </js.ExpressionStatement>);
     return file;
+  }
+
+  private getCurrentListen(root: GenericJsNode, expressId: js.Identifier): js.ExpressionStatement {
+    const listens = root.findChildrenOfType(js.CallExpression).filter(ce => {
+      return (ce.callee().format().indexOf(expressId.name + ".listen") === 0);
+    })
+
+    if (listens.size() > 0) {
+      return listens.at(0).findParentOfType(js.ExpressionStatement);
+    }
+    return null;
   }
 
   private getListenInvoke(root: GenericJsNode, expressId: js.Identifier) {
 
-   const expressListen = (
-     <js.MemberExpression object={expressId} property="listen"/>
-   );
-    root.findFirstChildOfType(js.Program).append(
+    const currentListen = this.getCurrentListen(root, expressId);
+    if (currentListen !== null) {
+      return currentListen;
+    }
+
+    const expressListen = (
+      <js.MemberExpression object={expressId} property="listen"/>
+    );
+
+    const listen = (
       <js.ExpressionStatement>
         <js.CallExpression callee={expressListen as js.MemberExpression}>
           <js.Literal value={8080}/>
         </js.CallExpression>
       </js.ExpressionStatement> as js.ExpressionStatement
     );
+
+    root.findFirstChildOfType(js.Program).append(listen);
+    return this.getCurrentListen(root, expressId);
 
   }
 
