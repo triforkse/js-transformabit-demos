@@ -109,10 +109,10 @@ export class AddWebSocket implements ProjectEditor, Transformation {
   private addConnection(ctor: js.MethodDefinition, params: AddWebSocketParams) {
     const body = ctor.body();
     if (body.check(js.BlockStatement)) {
-      body.appendStatement(this.connectionInitStatement(params));
-      body.appendStatement(this.eventConnection('open'));
-      body.appendStatement(this.eventConnection('error'));
-      body.appendStatement(this.eventConnection('error'));
+      body.append(this.connectionInitStatement(params));
+      body.append(this.eventConnection('open'));
+      body.append(this.eventConnection('error'));
+      body.append(this.eventConnection('error'));
     }
   }
 
