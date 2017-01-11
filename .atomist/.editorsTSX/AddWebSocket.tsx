@@ -1,79 +1,54 @@
-import { Project, File } from '@atomist/rug/model/Core';
-import { ProjectEditor } from '@atomist/rug/operations/ProjectEditor';
-import { Result, Status, Parameter } from '@atomist/rug/operations/RugOperation';
-
-import * as js from 'js-transformabit/dist/JsCode';
-import { JsNode, GenericJsNode } from 'js-transformabit/dist/JsNode';
-
-import { ReactContext } from '../ReactContext';
+import * as js from 'js-transformabit';
+import { JsProjectEditor } from '../JsProjectEditor';
 
 const JsCode = js.JsCode;
-
-// import { EditorParams, ReactEditor } from '../ReactEditor';
 
 interface AddWebSocketParams {
   component: string;
   address: string;
 };
 
-export class AddWebSocket implements ProjectEditor {
-  tags = ['websocket', 'react'];
-  name = 'AddWebSocket';
-  description = 'Adds a websocket to a React component';
-  parameters: Parameter[] = [
-    {
-      name: 'component',
-      required: true,
-      description: 'component name',
-      displayName: 'component name',
-      validInput: 'name of a component',
-      pattern: '^.+$',
-      minLength: 1,
-      maxLength: 20
-    },
-    {
-      name: 'address',
-      required: true,
-      description: 'address to connect to',
-      displayName: 'address',
-      validInput: 'ip address',
-      pattern: '^.+$',
-      minLength: 1,
-      maxLength: 20
-    }
-  ];
-  project: Project;
-
-  edit(project: Project, params: AddWebSocketParams): Result {
-    this.project = project;
-    let rc = new ReactContext(project);
-    rc.jsFiles().forEach(file => {
-      try {
-        let root = JsNode.fromModuleCode(file.content());
-        root = this.editModule(root, params);
-        if (root) {
-          file.setContent(root.format());
-        }
-      } catch (error) {
-        this.project.println(error.toString());
+export class AddWebSocket extends JsProjectEditor {
+  get description() {
+    return 'Adds a websocket to a React component';
+  }
+  get parameters() {
+    return [
+      {
+        name: 'component',
+        required: true,
+        description: 'component name',
+        displayName: 'component name',
+        validInput: 'name of a component',
+        pattern: '^.+$',
+        minLength: 1,
+        maxLength: 20
+      },
+      {
+        name: 'address',
+        required: true,
+        description: 'address to connect to',
+        displayName: 'address',
+        validInput: 'ip address',
+        pattern: '^.+$',
+        minLength: 1,
+        maxLength: 20
       }
-    });
-    return new Result(Status.Success);
+    ];
   }
 
-  editModule(file: js.File, params: AddWebSocketParams): js.File {
-    const component = file
-      .findFirstChildOfType(js.ReactClassComponent, node => node.id().name === params.component);
-    if (component !== undefined) {
-      let ctor = component.findConstructor();
-      if (!ctor) {
-        component.createConstructor();
-        ctor = component.findConstructor();
+  editJS() {
+    this.tryForFiles(file => this.isJsFile(file), file => {
+      const root = js.JsNode.fromModuleCode(file.content());
+      const component = root.findFirstChildOfType(
+        js.ReactClassComponent, node => node.id().name === this.params.component);
+      if (component !== undefined) {
+        const ctor = component.findOrCreate(component.findConstructor, component.createConstructor);
+        this.addHandlers(ctor);
+        this.addConnection(ctor);
+        file.setContent(root.format());
       }
-      this.addHandlers(ctor);
-      this.addConnection(ctor, params);
-    }
-    return file;
+    });
   }
 
   private addHandlers(ctor: js.MethodDefinition) {
@@ -88,12 +63,11 @@ export class AddWebSocket implements ProjectEditor {
     }
   }
 
-  private hasMethod(methodName: string, ctor: GenericJsNode): boolean {
+  private hasMethod(methodName: string, ctor: js.GenericJsNode): boolean {
     let root = ctor.findClosestParentOfType(js.ClassDeclaration);
     if (root === null) {
       return false;
     }
-
     return root.findChildrenOfType(js.MethodDefinition).filter(md => {
       const key = md.key();
       if (key.check(js.Identifier)) {
@@ -103,23 +77,23 @@ export class AddWebSocket implements ProjectEditor {
     }).size() > 0;
   }
 
-  private addConnection(ctor: js.MethodDefinition, params: AddWebSocketParams) {
+  private addConnection(ctor: js.MethodDefinition) {
     const body = ctor.body();
     if (body.check(js.BlockStatement)) {
-      body.append(this.connectionInitStatement(params));
+      body.append(this.connectionInitStatement());
       body.append(this.eventConnection('open'));
       body.append(this.eventConnection('error'));
       body.append(this.eventConnection('error'));
     }
   }
 
-  private connectionInitStatement(params: AddWebSocketParams): js.ExpressionStatement {
+  private connectionInitStatement(): js.ExpressionStatement {
     return (
       <js.ExpressionStatement>
         <js.AssignmentExpression>
           <js.MemberExpression object='this' property='connection' />
           <js.NewExpression callee='WebSocket'>
-            <js.Literal value={'wss://' + params.address} />
+            <js.Literal value={'wss://' + this.params.address} />
           </js.NewExpression>
         </js.AssignmentExpression>
       </js.ExpressionStatement> as js.ExpressionStatement

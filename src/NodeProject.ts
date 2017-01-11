@@ -7,16 +7,16 @@ import 'colors';
 const jsdiff = require('diff');
 
 class NodeProjectBase implements Project {
-  nodeName(): String {
+  nodeName(): string {
     return '';
   }
-  nodeType(): String {
+  nodeType(): string[] {
+    return [];
+  }
+  value(): string {
     return '';
   }
-  value(): String {
-    return '';
-  }
-  update(newValue: String) { }
+  update(newValue: string) { }
   addDirectory(name: string, parentPath: string): void { }
   addDirectoryAndIntermediates(directoryPath: string): void { }
   addFile(path: string, content: string): void { }
@@ -78,16 +78,16 @@ class NodeProjectBase implements Project {
 }
 
 class NodeFileBase implements File {
-  nodeName(): String {
+  nodeName(): string {
     return '';
   }
-  nodeType(): String {
+  nodeType(): string[] {
+    return [];
+  }
+  value(): string {
     return '';
   }
-  value(): String {
-    return '';
-  }
-  update(newValue: String) { }
+  update(newValue: string) { }
   append(literal: string): void { }
   contains(what: string): boolean {
     return false;

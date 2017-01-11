@@ -7,7 +7,7 @@ import {
   Parameter
 } from './Rug';
 
-export class JsProjectEditor implements ProjectEditor {
+export abstract class JsProjectEditor implements ProjectEditor {
   get tags() {
     return ['react'];
   }
@@ -34,11 +34,14 @@ export class JsProjectEditor implements ProjectEditor {
     return this.params;
   }
 
-  edit(project: Project, params: {}): Result {
+  edit(project: Project, params?: {}): Result {
+    params = params || {};
     this.project_ = project;
     this.params_ = params;
-    return new Result(Status.NoChange);
+    return this.editJS() || new Result(Status.Success);
   }
+
+  abstract editJS(): void | Result;
 
   isHidden(file: File) {
     const filePath = file.path();
@@ -63,7 +66,7 @@ export class JsProjectEditor implements ProjectEditor {
         try {
           callback(file);
         } catch (error) {
-          this.project_.println(`Failed to apply editor ${this.name} on ${file.path()}: ${error.toString()}`);
+          this.project_.println(`Failed to apply editor ${this.name} on ${file.path()}: ${error.stack}`);
         }
       });
   }

@@ -1,11 +1,5 @@
-import { Project, File } from '@atomist/rug/model/Core';
-import { ProjectEditor } from '@atomist/rug/operations/ProjectEditor';
-import { Result, Status, Parameter } from '@atomist/rug/operations/RugOperation';
-
-import * as js from 'js-transformabit/dist/JsCode';
-import { JsNode, GenericJsNode } from 'js-transformabit/dist/JsNode';
-
-import { ReactContext } from '../ReactContext';
+import * as js from 'js-transformabit';
+import { JsProjectEditor } from '../JsProjectEditor';
 
 const JsCode = js.JsCode;
 
@@ -13,58 +7,46 @@ interface ExpressRestParams {
   uri: string;
 };
 
-export class ExpressRest implements ProjectEditor {
-  tags = ['express'];
-  name = 'ExpressRest';
-  description = 'TODO';
-  parameters: Parameter[] = [
-    {
-      name: 'uri',
-      required: true,
-      description: 'URI',
-      displayName: 'URI',
-      validInput: 'URI',
-      pattern: '^.+$'
-    }
-  ];
-  project: Project;
-
-  edit(project: Project, params: ExpressRestParams): Result {
-    this.project = project;
-    let rc = new ReactContext(project);
-    rc.jsFiles().forEach(file => {
-      let root = JsNode.fromModuleCode(file.content());
-      root = this.editModule(root, params);
-      if (root) {
-        file.setContent(root.format());
+export class ExpressRest extends JsProjectEditor {
+  get parameters() {
+    return [
+      {
+        name: 'uri',
+        required: true,
+        description: 'URI',
+        displayName: 'URI',
+        validInput: 'URI',
+        pattern: '^.+$'
       }
+    ];
+  }
+
+  editJS() {
+    this.tryForFiles(file => this.isJsFile(file), file => {
+      let root = js.JsNode.fromModuleCode(file.content());
+      const expressId = this.getExpressIdentifier(root);
+      const listenFunc = this.getListenInvoke(root, expressId);
+      listenFunc.insertBefore(
+        <js.ExpressionStatement>
+          <js.CallExpression callee={expressId.name + ".get"}>
+            <js.Literal value={this.params.uri}/>
+            <js.FunctionExpression>
+              <js.Identifier name="req"/>
+              <js.Identifier name="res"/>
+              <js.BlockStatement>
+              </js.BlockStatement>
+            </js.FunctionExpression>
+          </js.CallExpression>
+        </js.ExpressionStatement>
+      );
+      file.setContent(root.format());
     });
-    return new Result(Status.Success);
   }
 
-  editModule(file: js.File, params: ExpressRestParams): js.File {
-    const expressId = this.getExpressIdentifier(file);
-    const listenFunc = this.getListenInvoke(file, expressId);
-
-    listenFunc.insertBefore(
-      <js.ExpressionStatement>
-        <js.CallExpression callee={expressId.name + ".get"}>
-          <js.Literal value={params.uri}/>
-          <js.FunctionExpression>
-            <js.Identifier name="req"/>
-            <js.Identifier name="res"/>
-            <js.BlockStatement>
-            </js.BlockStatement>
-          </js.FunctionExpression>
-        </js.CallExpression>
-      </js.ExpressionStatement>);
-    return file;
-  }
-
-  private getCurrentListen(root: GenericJsNode, expressId: js.Identifier): js.ExpressionStatement {
+  private getCurrentListen(root: js.GenericJsNode, expressId: js.Identifier): js.ExpressionStatement {
     const listens = root.findChildrenOfType(js.CallExpression).filter(ce => {
       return (ce.callee().format().indexOf(expressId.name + ".listen") === 0);
-    })
+    });
 
     if (listens.size() > 0) {
       return listens.at(0).findParentOfType(js.ExpressionStatement);
@@ -72,7 +54,7 @@ export class ExpressRest implements ProjectEditor {
     return null;
   }
 
-  private getListenInvoke(root: GenericJsNode, expressId: js.Identifier) {
+  private getListenInvoke(root: js.GenericJsNode, expressId: js.Identifier) {
 
     const currentListen = this.getCurrentListen(root, expressId);
     if (currentListen !== null) {
@@ -96,7 +78,7 @@ export class ExpressRest implements ProjectEditor {
 
   }
 
-  private getExpressIdentifier(root: GenericJsNode): js.Identifier {
+  private getExpressIdentifier(root: js.GenericJsNode): js.Identifier {
     const importExpressId = this.getExistingImportExpressDeclaration(root);
     if (importExpressId === null) {
       return this.addExpressImport(root);
@@ -112,7 +94,7 @@ export class ExpressRest implements ProjectEditor {
     return new js.Identifier().build({name: "express"}, []);
   }
 
-  private getExistingImportExpressDeclaration(root: GenericJsNode) {
+  private getExistingImportExpressDeclaration(root: js.GenericJsNode) {
     return this.getLeftIdentifierForCallExpression(root, "require", args => {
       if (args.length !== 1) {
           return false;
@@ -124,7 +106,9 @@ export class ExpressRest implements ProjectEditor {
     });
   }
 
-  private getLeftIdentifierForCallExpression(root: GenericJsNode, calleeName: string, argValidator: (args: js.GenericExpression[]) => boolean) {
+  private getLeftIdentifierForCallExpression(root: js.GenericJsNode, calleeName: string,
+    argValidator: (args: js.GenericExpression[]) => boolean) {
+
     const varDecs = root.findChildrenOfType(js.VariableDeclarator).toList();
     for (const varDec of varDecs) {
       let init = varDec.init();
@@ -158,7 +142,7 @@ export class ExpressRest implements ProjectEditor {
     return null;
   }
 
-  private importAndInitExpressNode(): GenericJsNode {
+  private importAndInitExpressNode(): js.GenericJsNode {
     const require = (
       <js.CallExpression callee='require'>
        <js.Literal value="express" />
@@ -174,7 +158,7 @@ export class ExpressRest implements ProjectEditor {
     return varDec;
   }
 
-  private addExpressImport(root: GenericJsNode): js.Identifier {
+  private addExpressImport(root: js.GenericJsNode): js.Identifier {
     const requires = this.getRequires(root);
     if (requires.length === 0) {
       if (root.children().first().children().size() === 0) {
@@ -190,7 +174,7 @@ export class ExpressRest implements ProjectEditor {
     return new js.Identifier().build({name: "express"}, []);
   }
 
-  private getRequires(root: GenericJsNode): js.VariableDeclarator[] {
+  private getRequires(root: js.GenericJsNode): js.VariableDeclarator[] {
     return root.findChildrenOfType(js.VariableDeclarator).filter(varDec => {
       let init = varDec.init();
       if (init.check(js.CallExpression)) {
