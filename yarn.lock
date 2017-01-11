@@ -2,17 +2,17 @@
 # yarn lockfile v1
 
 
-"@atomist/rug@^0.8.0":
-  version "0.8.0"
-  resolved "https://registry.yarnpkg.com/@atomist/rug/-/rug-0.8.0.tgz#50733b1d3cca5ad36f8984dfa4d444981792463b"
+"@atomist/rug@^0.9.0":
+  version "0.9.0"
+  resolved "https://registry.yarnpkg.com/@atomist/rug/-/rug-0.9.0.tgz#a86a050fa98130fd7832a7fd869720459aa46018"
 
 "@types/jest@^16.0.3":
   version "16.0.3"
   resolved "https://registry.yarnpkg.com/@types/jest/-/jest-16.0.3.tgz#28a465586cd37d2638043ebcca91010ed89fc284"
 
-"@types/node@^6.0.58":
-  version "6.0.58"
-  resolved "https://registry.yarnpkg.com/@types/node/-/node-6.0.58.tgz#7b3b7065f3cdf24e2349d35b68d2795cfa874553"
+"@types/node@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.0.tgz#c081147b109da5f9c57af70571771be97ce9c0ba"
 
 abab@^1.0.0:
   version "1.0.3"
@@ -1478,9 +1478,9 @@ js-tokens@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-2.0.0.tgz#79903f5563ee778cc1162e6dcf1a0027c97f9cb5"
 
-js-transformabit@^0.1.1:
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/js-transformabit/-/js-transformabit-0.1.1.tgz#b3801916760b8f67e2403c80529ea82f21f32a15"
+js-transformabit@^0.2.0:
+  version "0.2.0"
+  resolved "https://registry.yarnpkg.com/js-transformabit/-/js-transformabit-0.2.0.tgz#362e3c691f89f06d98d8e1ff901080996cd09852"
 
 js-yaml@^3.7.0:
   version "3.7.0"
@@ -2572,6 +2572,10 @@ type-check@~0.3.2:
   resolved "https://registry.yarnpkg.com/type-check/-/type-check-0.3.2.tgz#5884cab512cf1d355e3fb784f30804b2b520db72"
   dependencies:
     prelude-ls "~1.1.2"
+
+typescript@^2.1.4:
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.1.4.tgz#b53b69fb841126acb1dd4b397d21daba87572251"
 
 uglify-js@^2.6:
   version "2.7.5"
