@@ -29,7 +29,7 @@ export class AddUnitTestForReactComponent implements ProjectEditor {
           project.addFile(testPath,
 `import React from 'react';
 import ReactDOM from 'react-dom';
-import ${componentName} from './${file.name}';
+import ${componentName} from './${file.name()}';
 
 it('renders without crashing', () => {
   const div = document.createElement('div');

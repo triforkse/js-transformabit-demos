@@ -79,7 +79,7 @@ let node: GenericJsNode;
 // });
 // project.print();
 
-// Demo: bind web sockets
+// Demo: create unit tests
 import { AddUnitTestForReactComponent } from '../.atomist/editors/AddUnitTestForReactComponent';
 const project = VirtualNodeProject.fromExistingApp('./sample_app_src');
 new AddUnitTestForReactComponent().edit(project, {});
