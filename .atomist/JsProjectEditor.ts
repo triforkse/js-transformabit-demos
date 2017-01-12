@@ -73,8 +73,7 @@ export abstract class JsProjectEditor implements ProjectEditor {
       });
   }
 
-  tryEditReactComponents(callback: (component: (js.ReactComponent | js.ReactClassComponent)) => js.GenericJsNode) {
-
+  tryEditReactComponents(callback: (component: js.AnyReactComponent) => js.GenericJsNode) {
     this.tryEditFiles(file => this.isJsFile(file), file => {
       let changes = false;
       const root = js.JsNode.fromModuleCode(file.content());
