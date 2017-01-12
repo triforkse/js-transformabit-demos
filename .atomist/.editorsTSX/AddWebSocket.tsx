@@ -29,14 +29,17 @@ export class AddWebSocket extends JsProjectEditor {
   }
 
   editJs() {
-    this.tryEditReactComponents(component => {
-      if (component.name === this.params['component']) {
-        const ctor = component.findOrCreate(component.findConstructor, component.createConstructor);
-        this.addHandlers(ctor);
-        this.addConnection(ctor);
-        return component;
-      }
-    });
+    this.tryEditReactComponentsOfType(js.ReactComponent, this.editComponent);
+    this.tryEditReactComponentsOfType(js.ReactClassComponent, this.editComponent);
+  }
+
+  editComponent(component: js.StatefulReactComponent) {
+    if (component.name === this.params['component']) {
+      const ctor = component.findOrCreate(component.findConstructor, component.createConstructor);
+      this.addHandlers(ctor);
+      this.addConnection(ctor);
+      return component;
+    }
   }
 
   private addHandlers(ctor: js.MethodDefinition) {
