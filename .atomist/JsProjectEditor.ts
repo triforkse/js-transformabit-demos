@@ -73,24 +73,31 @@ export abstract class JsProjectEditor implements ProjectEditor {
       });
   }
 
-  tryEditReactComponents(callback: (component: js.ReactComponent | js.ReactClassComponent) => js.GenericJsNode) {
+  tryEditReactComponents<T extends js.GenericJsNode>(
+    callback: (component: T) => js.GenericJsNode, type?: js.JsNodeType<T>) {
+
     this.tryEditFiles(file => this.isJsFile(file), file => {
       let changes = false;
       const root = js.JsNode.fromModuleCode(file.content());
-      root
-        .findChildrenOfType(js.ReactComponent)
-        .concat(root.findChildrenOfType(js.ReactClassComponent))
-        .forEach(component => {
-          try {
-            const editedComponent = callback.call(this, component);
-            if (editedComponent) {
-              component.replace(editedComponent);
-              changes = true;
-            }
-          } catch (error) {
-            this.project_.println(`Failed to edit component ${component.name} in ${file.path()}: ${error.stack}`);
+      let components;
+      if (type) {
+        components = root.findChildrenOfType(type);
+      } else {
+        components = root
+          .findChildrenOfType(js.ReactComponent)
+          .concat(root.findChildrenOfType(js.ReactClassComponent))
+      }
+      components.forEach(component => {
+        try {
+          const editedComponent = callback.call(this, component);
+          if (editedComponent) {
+            component.replace(editedComponent);
+            changes = true;
           }
-        });
+        } catch (error) {
+          this.project_.println(`Failed to edit component ${component.name} in ${file.path()}: ${error.stack}`);
+        }
+      });
       if (changes) {
         file.setContent(root.format());
       }
