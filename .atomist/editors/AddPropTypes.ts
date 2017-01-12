@@ -5,36 +5,28 @@ export class AddPropTypes extends JsProjectEditor {
     get description() {
         return 'Adds a PropTypes to a React component';
     }
-    editJS() {
-        this.tryForFiles(file => this.isJsFile(file), file => {
-            let root = js.JsNode.fromModuleCode(file.content());
-            root.findChildrenOfType(js.ReactClassComponent).forEach(component => {
-                this.editComponent(component);
-            });
-            if (root) {
-                file.setContent(root.format());
-            }
-        });
-    }
-    editComponent(component) {
-        let props = {};
-        component.findChildrenOfType(js.MemberExpression).forEach(memberExpression => {
-            const property = memberExpression.property();
-            if (property.check(js.Identifier)) {
-                if (memberExpression.object().format() === 'this.props') {
-                    if (props[property.name] === undefined) {
-                        props[property.name] = null;
-                    }
-                    const type = js.inferPropType(component, property.name);
-                    if (type) {
-                        props[property.name] = type;
+    editJs() {
+        this.tryEditReactComponents(component => {
+            let props = {};
+            component.findChildrenOfType(js.MemberExpression).forEach(memberExpression => {
+                const property = memberExpression.property();
+                if (property.check(js.Identifier)) {
+                    if (memberExpression.object().format() === 'this.props') {
+                        if (props[property.name] === undefined) {
+                            props[property.name] = null;
+                        }
+                        const type = js.inferPropType(component, property.name);
+                        if (type) {
+                            props[property.name] = type;
+                        }
                     }
                 }
-            }
+            });
+            const propNode = Object.keys(props).map(name => JsCode.createElement(js.Property, { key: name, kind: 'init' },
+                JsCode.createElement(js.MemberExpression, { object: JsCode.createElement(js.MemberExpression, { object: "React", property: "PropTypes" }), property: props[name] || 'any' })));
+            component.insertAfter(JsCode.createElement(js.ExpressionStatement, null,
+                JsCode.createElement(js.AssignmentExpression, { left: JsCode.createElement(js.MemberExpression, { object: JsCode.createElement(js.Identifier, { name: component.name }), property: "propTypes" }), right: JsCode.createElement(js.ObjectExpression, null, propNode) })));
+            return component;
         });
-        const propNode = Object.keys(props).map(name => JsCode.createElement(js.Property, { key: name, kind: 'init' },
-            JsCode.createElement(js.MemberExpression, { object: JsCode.createElement(js.MemberExpression, { object: "React", property: "PropTypes" }), property: props[name] || 'any' })));
-        component.insertAfter(JsCode.createElement(js.ExpressionStatement, null,
-            JsCode.createElement(js.AssignmentExpression, { left: JsCode.createElement(js.MemberExpression, { object: component.id(), property: "propTypes" }), right: JsCode.createElement(js.ObjectExpression, null, propNode) })));
     }
 }

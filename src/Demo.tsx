@@ -66,7 +66,7 @@ let node: GenericJsNode;
 //   }
 // }`);
 // new AddPropTypes().edit(project);
-// project.print();
+// project.printDiff();
 
 // Demo: bind web sockets
 // import { AddWebSocket } from '../.atomist/.editorsTSX/AddWebSocket';
@@ -75,10 +75,16 @@ let node: GenericJsNode;
 //   component: 'App',
 //   address: 'localhost'
 // });
-// project.print();
+// project.printDiff();
 
 // Demo: create unit tests
-import { AddUnitTestForReactComponent } from '../.atomist/editors/AddUnitTestForReactComponent';
+// import { AddUnitTestForReactComponent } from '../.atomist/editors/AddUnitTestForReactComponent';
+// const project = VirtualNodeProject.fromExistingApp('./sample_app_src');
+// new AddUnitTestForReactComponent().edit(project);
+// project.printDiff();
+
+// Demo: convert components
+import { ConvertToReactComponent } from '../.atomist/editors/ConvertToReactComponent';
 const project = VirtualNodeProject.fromExistingApp('./sample_app_src');
-new AddUnitTestForReactComponent().edit(project);
+new ConvertToReactComponent().edit(project);
 project.print();

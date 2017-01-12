@@ -22,7 +22,7 @@ export class ExpressRest extends JsProjectEditor {
   }
 
   editJS() {
-    this.tryForFiles(file => this.isJsFile(file), file => {
+    this.tryEditFiles(file => this.isJsFile(file), file => {
       let root = js.JsNode.fromModuleCode(file.content());
       const expressId = this.getExpressIdentifier(root);
       const listenFunc = this.getListenInvoke(root, expressId);

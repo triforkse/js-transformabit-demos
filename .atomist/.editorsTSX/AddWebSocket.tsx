@@ -17,36 +17,24 @@ export class AddWebSocket extends JsProjectEditor {
       {
         name: 'component',
         required: true,
-        description: 'component name',
-        displayName: 'component name',
-        validInput: 'name of a component',
-        pattern: '^.+$',
-        minLength: 1,
-        maxLength: 20
+        pattern: '^.+$'
       },
       {
         name: 'address',
         required: true,
         description: 'address to connect to',
-        displayName: 'address',
-        validInput: 'ip address',
-        pattern: '^.+$',
-        minLength: 1,
-        maxLength: 20
+        pattern: '^.+$'
       }
     ];
   }
 
   editJS() {
-    this.tryForFiles(file => this.isJsFile(file), file => {
-      const root = js.JsNode.fromModuleCode(file.content());
-      const component = root.findFirstChildOfType(
-        js.ReactClassComponent, node => node.id().name === this.params.component);
-      if (component !== undefined) {
+    this.tryEditReactComponents(component => {
+      if (component.name === this.params.component) {
         const ctor = component.findOrCreate(component.findConstructor, component.createConstructor);
         this.addHandlers(ctor);
         this.addConnection(ctor);
-        file.setContent(root.format());
+        return component;
       }
     });
   }

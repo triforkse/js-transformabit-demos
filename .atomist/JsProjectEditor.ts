@@ -7,6 +7,8 @@ import {
   Parameter
 } from './Rug';
 
+import * as js from 'js-transformabit';
+
 export abstract class JsProjectEditor implements ProjectEditor {
   get tags() {
     return ['react'];
@@ -38,10 +40,10 @@ export abstract class JsProjectEditor implements ProjectEditor {
     params = params || {};
     this.project_ = project;
     this.params_ = params;
-    return this.editJS() || new Result(Status.Success);
+    return this.editJs() || new Result(Status.Success);
   }
 
-  abstract editJS(): void | Result;
+  abstract editJs(): void | Result;
 
   isHidden(file: File) {
     const filePath = file.path();
@@ -57,7 +59,7 @@ export abstract class JsProjectEditor implements ProjectEditor {
     return this.hasExtension(file, '.js');
   }
 
-  tryForFiles(filter: (file: File) => boolean, callback: (file: File) => void) {
+  tryEditFiles(filter: (file: File) => boolean, callback: (file: File) => void) {
     this.project_
       .files()
       .filter(this.isHidden)
@@ -69,5 +71,29 @@ export abstract class JsProjectEditor implements ProjectEditor {
           this.project_.println(`Failed to apply editor ${this.name} on ${file.path()}: ${error.stack}`);
         }
       });
+  }
+
+  tryEditReactComponents(callback: (component: js.ReactComponent | js.ReactClassComponent) => js.GenericJsNode) {
+    this.tryEditFiles(file => this.isJsFile(file), file => {
+      let changes = false;
+      const root = js.JsNode.fromModuleCode(file.content());
+      root
+        .findChildrenOfType(js.ReactComponent)
+        .concat(root.findChildrenOfType(js.ReactClassComponent))
+        .forEach(component => {
+          try {
+            const editedComponent = callback.call(this, component);
+            if (editedComponent) {
+              component.replace(editedComponent);
+              changes = true;
+            }
+          } catch (error) {
+            this.project_.println(`Failed to edit component ${component.name} in ${file.path()}: ${error.stack}`);
+          }
+        });
+      if (changes) {
+        file.setContent(root.format());
+      }
+    });
   }
 }

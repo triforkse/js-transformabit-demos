@@ -1,36 +1,21 @@
-import { Project, File } from '@atomist/rug/model/Core';
-import { ProjectEditor } from '@atomist/rug/operations/ProjectEditor';
-import { Result, Status, Parameter } from '@atomist/rug/operations/RugOperation';
+import * as js from 'js-transformabit';
+import { JsProjectEditor } from '../JsProjectEditor';
 
-// Import in this exact order, or disaster strikes!
-import { JsNode, GenericJsNode } from 'js-transformabit/dist/JsNode';
-import * as js from 'js-transformabit/dist/JsCode';
-
-import {ReactContext} from '../ReactContext';
-
-class Truthinator implements ProjectEditor {
-    tags = ['truthy', 'boolean'];
-    name = 'Truthinator';
-    description = 'Switches != to !== and == to ===';
-    parameters: Parameter[] = []
-
-    edit(project: Project, params: Parameter[]): Result {
-      const rc = new ReactContext(project);
-      rc.jsFiles().forEach(jsFile => {
-        this.exec(jsFile);
-      });
-
-    return new Result(Status.Success);
+export class Truthinator extends JsProjectEditor {
+    get description() {
+      return 'Switches != to !== and == to ===';
     }
 
-    private exec(jsFile: File) {
-      const root = JsNode.fromModuleCode(jsFile.content())
-      root.findChildrenOfType(js.BinaryExpression).forEach(binaryExpression => {
-        if (this.isDangerousOperator(binaryExpression.operator)) {
-          binaryExpression.operator = this.asSafeOperator(binaryExpression.operator);
-        }
+    editJs() {
+      this.tryEditFiles(file => this.isJsFile(file), file => {
+        const root = js.JsNode.fromModuleCode(file.content());
+        root.findChildrenOfType(js.BinaryExpression).forEach(binaryExpression => {
+          if (this.isDangerousOperator(binaryExpression.operator)) {
+            binaryExpression.operator = this.asSafeOperator(binaryExpression.operator);
+          }
+        });
+        file.setContent(root.format());
       });
-      jsFile.setContent(root.format());
     }
 
   private isDangerousOperator(operator: string): boolean {
@@ -44,7 +29,6 @@ class Truthinator implements ProjectEditor {
       default: return operator;
     }
   }
-
 }
 
 const truthinatorEditor = new Truthinator();

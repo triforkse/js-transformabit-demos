@@ -3,7 +3,7 @@ import * as path from 'path';
 import { Project, File } from '@atomist/rug/model/Core';
 import { ProjectContext } from '@atomist/rug/operations/ProjectEditor';
 
-import 'colors';
+const colors = require('colors');
 const jsdiff = require('diff');
 
 class NodeProjectBase implements Project {
@@ -196,7 +196,14 @@ export class VirtualNodeFile extends NodeFileBase {
 
   print() {
     if (this.wasModified()) {
-      console.log('=== ' + this.path() + ' ========================================');
+      console.log(colors.yellow('=== ' + this.path() + ' ========================================'));
+      console.log(colors.cyan(this.content()));
+    }
+  }
+
+  printDiff() {
+    if (this.wasModified()) {
+      console.log(colors.yellow('=== ' + this.path() + ' ========================================'));
       for (const part of jsdiff.diffLines(this.initialContent(), this.modifiedContents, {
         newlineIsToken: true
       })) {
@@ -244,5 +251,9 @@ export class VirtualNodeProject extends NodeProjectBase {
 
   print() {
     this.files().forEach(file => (<VirtualNodeFile>file).print());
+  }
+
+  printDiff() {
+    this.files().forEach(file => (<VirtualNodeFile>file).printDiff());
   }
 }
