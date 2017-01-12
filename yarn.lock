@@ -1478,9 +1478,9 @@ js-tokens@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/js-tokens/-/js-tokens-2.0.0.tgz#79903f5563ee778cc1162e6dcf1a0027c97f9cb5"
 
-js-transformabit@^0.2.0:
-  version "0.2.0"
-  resolved "https://registry.yarnpkg.com/js-transformabit/-/js-transformabit-0.2.0.tgz#362e3c691f89f06d98d8e1ff901080996cd09852"
+js-transformabit@^0.3.0:
+  version "0.3.0"
+  resolved "https://registry.yarnpkg.com/js-transformabit/-/js-transformabit-0.3.0.tgz#e8b5a8b608d70145a2b4de5487172f112114b039"
 
 js-yaml@^3.7.0:
   version "3.7.0"
@@ -2573,9 +2573,9 @@ type-check@~0.3.2:
   dependencies:
     prelude-ls "~1.1.2"
 
-typescript@^2.1.4:
-  version "2.1.4"
-  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.1.4.tgz#b53b69fb841126acb1dd4b397d21daba87572251"
+typescript@^2.1.5:
+  version "2.1.5"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-2.1.5.tgz#6fe9479e00e01855247cea216e7561bafcdbcd4a"
 
 uglify-js@^2.6:
   version "2.7.5"
