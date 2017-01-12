@@ -21,7 +21,7 @@ export class ExpressRest extends JsProjectEditor {
     ];
   }
 
-  editJS() {
+  editJs() {
     this.tryEditFiles(file => this.isJsFile(file), file => {
       let root = js.JsNode.fromModuleCode(file.content());
       const expressId = this.getExpressIdentifier(root);
@@ -100,7 +100,7 @@ export class ExpressRest extends JsProjectEditor {
           return false;
         }
         const arg = args[0];
-        if (arg.check(js.Literal)) {
+        if (arg instanceof js.Literal) {
           return arg.value === "express";
         }
     });
@@ -112,9 +112,9 @@ export class ExpressRest extends JsProjectEditor {
     const varDecs = root.findChildrenOfType(js.VariableDeclarator).toList();
     for (const varDec of varDecs) {
       let init = varDec.init();
-      if (init.check(js.CallExpression)) {
+      if (init instanceof js.CallExpression) {
         let callee = init.callee();
-        if (callee.check(js.Identifier)) {
+        if (callee instanceof js.Identifier) {
 
           if (callee.name !== calleeName) {
             continue;
@@ -123,9 +123,9 @@ export class ExpressRest extends JsProjectEditor {
           if (argValidator(args)) {
             return {declaration: varDec.findClosestParentOfType(js.VariableDeclaration), id: varDec.id(), init: false};
           }
-        } else if (callee.check(js.CallExpression)) {
+        } else if (callee instanceof js.CallExpression) {
           let calleeCallee = callee.callee();
-          if (calleeCallee.check(js.Identifier)) {
+          if (calleeCallee instanceof js.Identifier) {
             if (calleeCallee.name !== calleeName) {
               continue;
             }
@@ -177,9 +177,9 @@ export class ExpressRest extends JsProjectEditor {
   private getRequires(root: js.GenericJsNode): js.VariableDeclarator[] {
     return root.findChildrenOfType(js.VariableDeclarator).filter(varDec => {
       let init = varDec.init();
-      if (init.check(js.CallExpression)) {
+      if (init instanceof js.CallExpression) {
         let callee = init.callee();
-        if (callee.check(js.Identifier)) {
+        if (callee instanceof js.Identifier) {
           return callee.name === "require";
         }
       }

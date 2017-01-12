@@ -10,7 +10,7 @@ export class AddPropTypes extends JsProjectEditor {
             let props = {};
             component.findChildrenOfType(js.MemberExpression).forEach(memberExpression => {
                 const property = memberExpression.property();
-                if (property.check(js.Identifier)) {
+                if (property instanceof js.Identifier) {
                     if (memberExpression.object().format() === 'this.props') {
                         if (props[property.name] === undefined) {
                             props[property.name] = null;

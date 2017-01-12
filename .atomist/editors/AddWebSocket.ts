@@ -21,7 +21,7 @@ export class AddWebSocket extends JsProjectEditor {
             }
         ];
     }
-    editJS() {
+    editJs() {
         this.tryEditReactComponents(component => {
             if (component.name === this.params.component) {
                 const ctor = component.findOrCreate(component.findConstructor, component.createConstructor);
@@ -49,7 +49,7 @@ export class AddWebSocket extends JsProjectEditor {
         }
         return root.findChildrenOfType(js.MethodDefinition).filter(md => {
             const key = md.key();
-            if (key.check(js.Identifier)) {
+            if (key instanceof js.Identifier) {
                 return key.name === methodName;
             }
             return false;
@@ -57,7 +57,7 @@ export class AddWebSocket extends JsProjectEditor {
     }
     addConnection(ctor) {
         const body = ctor.body();
-        if (body.check(js.BlockStatement)) {
+        if (body instanceof js.BlockStatement) {
             body.append(this.connectionInitStatement());
             body.append(this.eventConnection('open'));
             body.append(this.eventConnection('error'));
