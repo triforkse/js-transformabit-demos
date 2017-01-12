@@ -36,7 +36,6 @@ export class AddWebSocket extends JsProjectEditor {
         this.addConnection(ctor);
         return component;
       }
-      return null;
     });
   }
 
@@ -82,7 +81,7 @@ export class AddWebSocket extends JsProjectEditor {
         <js.AssignmentExpression>
           <js.MemberExpression object='this' property='connection' />
           <js.NewExpression callee='WebSocket'>
-            <js.Literal value={'wss://' + this.params.address} />
+            <js.Literal value={'wss://' + this.params['address']} />
           </js.NewExpression>
         </js.AssignmentExpression>
       </js.ExpressionStatement> as js.ExpressionStatement

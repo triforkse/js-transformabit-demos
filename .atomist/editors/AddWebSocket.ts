@@ -23,7 +23,7 @@ export class AddWebSocket extends JsProjectEditor {
     }
     editJs() {
         this.tryEditReactComponents(component => {
-            if (component.name === this.params.component) {
+            if (component.name === this.params['component']) {
                 const ctor = component.findOrCreate(component.findConstructor, component.createConstructor);
                 this.addHandlers(ctor);
                 this.addConnection(ctor);
@@ -69,7 +69,7 @@ export class AddWebSocket extends JsProjectEditor {
             JsCode.createElement(js.AssignmentExpression, null,
                 JsCode.createElement(js.MemberExpression, { object: 'this', property: 'connection' }),
                 JsCode.createElement(js.NewExpression, { callee: 'WebSocket' },
-                    JsCode.createElement(js.Literal, { value: 'wss://' + this.params.address }))));
+                    JsCode.createElement(js.Literal, { value: 'wss://' + this.params['address'] }))));
     }
     eventConnection(event) {
         let thisConnection = JsCode.createElement(js.MemberExpression, { object: 'this', property: 'connection' });

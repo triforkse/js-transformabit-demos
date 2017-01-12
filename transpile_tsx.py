@@ -25,7 +25,7 @@ for tsx in os.listdir(TSX_ROOT):
     with open(out_path, 'r') as infile:
         s = infile.read()
         matches = re.findall(r'this\.([0-9a-zA-Z]+) ?=', s)
-        print('Adding member declarations for ', matches)
+        print('Adding member declarations for', matches)
         s = s.replace('constructor()', ';'.join([m + ':any' for m in matches]) + '; constructor()')
     with open(target_path, 'w') as outfile:
         outfile.write(s)
