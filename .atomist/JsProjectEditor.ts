@@ -112,7 +112,7 @@ export abstract class JsProjectEditor implements ProjectEditor {
               changes = true;
             }
           } catch (error) {
-            this.project_.println(`Failed to edit component ${component.name} in ${file.path()}: ${error.stack}`);
+            this.project_.println(`Failed to edit component in ${file.path()}: ${error.stack}`);
           }
         });
       if (changes) {
