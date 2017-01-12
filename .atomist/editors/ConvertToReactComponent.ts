@@ -7,9 +7,9 @@ export class ConvertToReactComponent extends JsProjectEditor {
   }
 
   editJs() {
-    this.tryEditReactComponents(component => {
+    this.tryEditReactComponentsOfType(js.ReactClassComponent, component => {
       return component.convertToReactComponent();
-    }, js.ReactClassComponent);
+    });
   }
 }
 

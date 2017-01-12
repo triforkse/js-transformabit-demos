@@ -30,12 +30,13 @@ export class AddWebSocket extends JsProjectEditor {
 
   editJs() {
     this.tryEditReactComponents(component => {
-      if (component.name === this.params.component) {
+      if (component.name === this.params['component']) {
         const ctor = component.findOrCreate(component.findConstructor, component.createConstructor);
         this.addHandlers(ctor);
         this.addConnection(ctor);
         return component;
       }
+      return null;
     });
   }
 

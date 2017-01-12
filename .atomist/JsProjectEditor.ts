@@ -33,7 +33,7 @@ export abstract class JsProjectEditor implements ProjectEditor {
 
   private params_: { [key: string]: any };
   get params() {
-    return this.params;
+    return this.params_;
   }
 
   edit(project: Project, params?: {}): Result {
@@ -73,31 +73,49 @@ export abstract class JsProjectEditor implements ProjectEditor {
       });
   }
 
-  tryEditReactComponents<T extends js.GenericJsNode>(
-    callback: (component: T) => js.GenericJsNode, type?: js.JsNodeType<T>) {
+  tryEditReactComponents(callback: (component: (js.ReactComponent | js.ReactClassComponent)) => js.GenericJsNode) {
 
     this.tryEditFiles(file => this.isJsFile(file), file => {
       let changes = false;
       const root = js.JsNode.fromModuleCode(file.content());
-      let components;
-      if (type) {
-        components = root.findChildrenOfType(type);
-      } else {
-        components = root
-          .findChildrenOfType(js.ReactComponent)
-          .concat(root.findChildrenOfType(js.ReactClassComponent))
-      }
-      components.forEach(component => {
-        try {
-          const editedComponent = callback.call(this, component);
-          if (editedComponent) {
-            component.replace(editedComponent);
-            changes = true;
+      root
+        .findChildrenOfTypes([js.ReactComponent, js.ReactClassComponent])
+        .forEach(component => {
+          try {
+            const editedComponent = callback.call(this, component);
+            if (editedComponent) {
+              component.replace(editedComponent);
+              changes = true;
+            }
+          } catch (error) {
+            this.project_.println(`Failed to edit component ${component.name} in ${file.path()}: ${error.stack}`);
           }
-        } catch (error) {
-          this.project_.println(`Failed to edit component ${component.name} in ${file.path()}: ${error.stack}`);
+        });
+        if (changes) {
+          file.setContent(root.format());
         }
       });
+  }
+
+  tryEditReactComponentsOfType<T extends js.GenericJsNode>(
+    type: js.JsNodeType<T>, callback: (component: T) => js.GenericJsNode) {
+
+    this.tryEditFiles(file => this.isJsFile(file), file => {
+      let changes = false;
+      const root = js.JsNode.fromModuleCode(file.content());
+      root
+        .findChildrenOfType(type)
+        .forEach(component => {
+          try {
+            const editedComponent = callback.call(this, component);
+            if (editedComponent) {
+              component.replace(editedComponent);
+              changes = true;
+            }
+          } catch (error) {
+            this.project_.println(`Failed to edit component ${component.name} in ${file.path()}: ${error.stack}`);
+          }
+        });
       if (changes) {
         file.setContent(root.format());
       }
