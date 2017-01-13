@@ -8,6 +8,6 @@
     "reactNamespace": "JsCode"
   },
   "include": [
-    "editors"
+    "Demo.tsx"
   ]
 }

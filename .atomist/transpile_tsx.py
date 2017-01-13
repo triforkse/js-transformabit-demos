@@ -4,8 +4,8 @@ import os
 import re
 import subprocess
 
-TSX_ROOT = '.atomist/.editorsTSX'
-EDITOR_ROOT = '.atomist/editors'
+TSX_ROOT = 'editors_tsx'
+EDITOR_ROOT = 'editors'
 
 for tsx in os.listdir(TSX_ROOT):
     tsx_path = os.path.join(TSX_ROOT, tsx)

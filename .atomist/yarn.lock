@@ -6,6 +6,10 @@
   version "0.9.0"
   resolved "https://registry.yarnpkg.com/@atomist/rug/-/rug-0.9.0.tgz#a86a050fa98130fd7832a7fd869720459aa46018"
 
+"@types/node@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.0.tgz#c081147b109da5f9c57af70571771be97ce9c0ba"
+
 ast-types@0.8.18:
   version "0.8.18"
   resolved "https://registry.yarnpkg.com/ast-types/-/ast-types-0.8.18.tgz#c8b98574898e8914e9d8de74b947564a9fe929af"
@@ -25,6 +29,10 @@ babylon@^6.15.0:
 colors@>=0.6.2:
   version "1.1.2"
   resolved "https://registry.yarnpkg.com/colors/-/colors-1.1.2.tgz#168a4701756b6a7f51a12ce0c97bfa28c084ed63"
+
+diff@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/diff/-/diff-3.2.0.tgz#c9ce393a4b7cbd0b058a725c93df299027868ff9"
 
 esprima@~3.1.0:
   version "3.1.3"

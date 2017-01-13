@@ -1,1 +1,7 @@
+build/
+editors_tsx/
+Demo.tsx
+yarn.lock
+*.sh
+*.py
 !node_modules

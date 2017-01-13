@@ -40,7 +40,7 @@ let node: GenericJsNode;
 // console.log(node.getRenderMethod().format());
 
 // Demo: add prop types
-// import { AddPropTypes } from '../.atomist/.editorsTSX/AddPropTypes';
+// import { AddPropTypes } from './editors_tsx/AddPropTypes';
 // const project = new VirtualNodeProject();
 // project.addInitialFile('/foo.js',
 // `class Foo extends React.Component {
@@ -69,8 +69,8 @@ let node: GenericJsNode;
 // project.printDiff();
 
 // Demo: bind web sockets
-import { AddWebSocket } from '../.atomist/.editorsTSX/AddWebSocket';
-const project = VirtualNodeProject.fromExistingApp('./sample_app_src');
+import { AddWebSocket } from './editors_tsx/AddWebSocket';
+const project = VirtualNodeProject.fromExistingApp('../sample_app_src');
 new AddWebSocket().edit(project, {
   component: 'App',
   address: 'localhost'
@@ -78,19 +78,19 @@ new AddWebSocket().edit(project, {
 project.printDiff();
 
 // Demo: create unit tests
-// import { AddUnitTestForReactComponent } from '../.atomist/editors/AddUnitTestForReactComponent';
-// const project = VirtualNodeProject.fromExistingApp('./sample_app_src');
+// import { AddUnitTestForReactComponent } from './editors/AddUnitTestForReactComponent';
+// const project = VirtualNodeProject.fromExistingApp('../sample_app_src');
 // new AddUnitTestForReactComponent().edit(project);
 // project.printDiff();
 
 // Demo: convert components
-// import { ConvertToReactComponent } from '../.atomist/editors/ConvertToReactComponent';
-// const project = VirtualNodeProject.fromExistingApp('./sample_app_src');
+// import { ConvertToReactComponent } from './editors/ConvertToReactComponent';
+// const project = VirtualNodeProject.fromExistingApp('../sample_app_src');
 // new ConvertToReactComponent().edit(project);
 // project.print();
 
 // Demo: reformat code
-// import { Reformat } from '../.atomist/editors/Reformat';
-// const project = VirtualNodeProject.fromExistingApp('./sample_app_src');
+// import { Reformat } from './editors/Reformat';
+// const project = VirtualNodeProject.fromExistingApp('../sample_app_src');
 // new Reformat().edit(project);
 // project.printDiff();
