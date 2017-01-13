@@ -7,7 +7,7 @@ export class AddUnitTestForReactComponent extends JsProjectEditor {
   }
 
   editJs() {
-    this.tryEditFiles(file => this.isJsFile(file), file => {
+    this.tryEditJsFiles(file => {
       const component = js.JsNode
         .fromModuleCode(file.content())
         .findFirstChildOfType(js.ReactClassComponent);

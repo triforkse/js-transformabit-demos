@@ -1,4 +1,3 @@
-import * as js from 'js-transformabit';
 import * as prettier from 'prettier';
 import { JsProjectEditor } from '../JsProjectEditor';
 
@@ -13,7 +12,7 @@ const defaults = {
 
 export class Reformat extends JsProjectEditor {
   editJs() {
-    this.tryEditFiles(file => this.isJsFile(file), file => {
+    this.tryEditJsFiles(file => {
       file.setContent(prettier.format(file.content(), defaults));
     });
   }

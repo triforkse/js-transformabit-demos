@@ -69,13 +69,13 @@ let node: GenericJsNode;
 // project.printDiff();
 
 // Demo: bind web sockets
-// import { AddWebSocket } from '../.atomist/.editorsTSX/AddWebSocket';
-// const project = VirtualNodeProject.fromExistingApp('./sample_app_src');
-// new AddWebSocket().edit(project, {
-//   component: 'App',
-//   address: 'localhost'
-// });
-// project.printDiff();
+import { AddWebSocket } from '../.atomist/.editorsTSX/AddWebSocket';
+const project = VirtualNodeProject.fromExistingApp('./sample_app_src');
+new AddWebSocket().edit(project, {
+  component: 'App',
+  address: 'localhost'
+});
+project.printDiff();
 
 // Demo: create unit tests
 // import { AddUnitTestForReactComponent } from '../.atomist/editors/AddUnitTestForReactComponent';
@@ -90,7 +90,7 @@ let node: GenericJsNode;
 // project.print();
 
 // Demo: reformat code
-import { Reformat } from '../.atomist/editors/Reformat';
-const project = VirtualNodeProject.fromExistingApp('./sample_app_src');
-new Reformat().edit(project);
-project.printDiff();
+// import { Reformat } from '../.atomist/editors/Reformat';
+// const project = VirtualNodeProject.fromExistingApp('./sample_app_src');
+// new Reformat().edit(project);
+// project.printDiff();

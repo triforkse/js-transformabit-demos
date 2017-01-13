@@ -28,42 +28,17 @@ export class AddWebSocket extends JsProjectEditor {
     editComponent(component) {
         if (component.name === this.params['component']) {
             const ctor = component.findOrCreate(component.findConstructor, component.createConstructor);
-            this.addHandlers(ctor);
-            this.addConnection(ctor);
-            return component;
-        }
-    }
-    addHandlers(ctor) {
-        if (!this.hasMethod('onOpen', ctor)) {
-            ctor.insertAfter(new js.MethodDefinition().build({ key: 'onOpen', kind: 'method' }, []));
-        }
-        if (!this.hasMethod('onMessage', ctor)) {
-            ctor.insertAfter(new js.MethodDefinition().build({ key: 'onMessage', kind: 'method' }, []));
-        }
-        if (!this.hasMethod('onError', ctor)) {
-            ctor.insertAfter(new js.MethodDefinition().build({ key: 'onError', kind: 'method' }, []));
-        }
-    }
-    hasMethod(methodName, ctor) {
-        let root = ctor.findClosestParentOfType(js.ClassDeclaration);
-        if (root === null) {
-            return false;
-        }
-        return root.findChildrenOfType(js.MethodDefinition).filter(md => {
-            const key = md.key();
-            if (key instanceof js.Identifier) {
-                return key.name === methodName;
+            ['onOpen', 'onMessage', 'onError'].forEach(s => {
+                if (!component.findMethod(s)) {
+                    ctor.insertAfter(new js.MethodDefinition().build({ key: s, kind: 'method' }, []));
+                }
+            });
+            const body = ctor.body();
+            if (body instanceof js.BlockStatement) {
+                body.append(this.connectionInitStatement());
+                ['open', 'message', 'error'].forEach(s => body.append(this.eventConnection(s)));
             }
-            return false;
-        }).size() > 0;
-    }
-    addConnection(ctor) {
-        const body = ctor.body();
-        if (body instanceof js.BlockStatement) {
-            body.append(this.connectionInitStatement());
-            body.append(this.eventConnection('open'));
-            body.append(this.eventConnection('error'));
-            body.append(this.eventConnection('error'));
+            return component;
         }
     }
     connectionInitStatement() {
@@ -81,8 +56,8 @@ export class AddWebSocket extends JsProjectEditor {
                 JsCode.createElement(js.MemberExpression, { object: thisConnection, property: eventMethod }),
                 JsCode.createElement(js.MemberExpression, { object: 'this', property: eventMethod })));
     }
-    capitalizeFirstLetter(string) {
-        return string.charAt(0).toUpperCase() + string.slice(1);
+    capitalizeFirstLetter(s) {
+        return s.charAt(0).toUpperCase() + s.slice(1);
     }
 }
 const addWebSocketEditor = new AddWebSocket();

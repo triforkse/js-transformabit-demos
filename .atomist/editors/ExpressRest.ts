@@ -16,13 +16,13 @@ export class ExpressRest extends JsProjectEditor {
         ];
     }
     editJs() {
-        this.tryEditFiles(file => this.isJsFile(file), file => {
+        this.tryEditJsFiles(file => {
             let root = js.JsNode.fromModuleCode(file.content());
             const expressId = this.getExpressIdentifier(root);
             const listenFunc = this.getListenInvoke(root, expressId);
             listenFunc.insertBefore(JsCode.createElement(js.ExpressionStatement, null,
                 JsCode.createElement(js.CallExpression, { callee: expressId.name + ".get" },
-                    JsCode.createElement(js.Literal, { value: this.params.uri }),
+                    JsCode.createElement(js.Literal, { value: this.params['uri'] }),
                     JsCode.createElement(js.FunctionExpression, null,
                         JsCode.createElement(js.Identifier, { name: "req" }),
                         JsCode.createElement(js.Identifier, { name: "res" }),

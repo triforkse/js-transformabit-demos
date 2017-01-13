@@ -7,7 +7,7 @@ export class Truthinator extends JsProjectEditor {
   }
 
   editJs() {
-    this.tryEditFiles(file => this.isJsFile(file), file => {
+    this.tryEditJsFiles(file => {
       const root = js.JsNode.fromModuleCode(file.content());
       root.findChildrenOfType(js.BinaryExpression).forEach(binaryExpression => {
         if (this.isDangerousOperator(binaryExpression.operator)) {
