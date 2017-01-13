@@ -3,7 +3,7 @@ import { JsProjectEditor } from '../JsProjectEditor';
 
 export class ConvertToReactComponent extends JsProjectEditor {
   get description() {
-    return 'Converts React.createClass components to React ES6 class components.';
+    return 'Converts ES6 class components to React.createClass components.';
   }
 
   editJs() {

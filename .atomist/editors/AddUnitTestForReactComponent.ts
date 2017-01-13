@@ -8,21 +8,20 @@ export class AddUnitTestForReactComponent extends JsProjectEditor {
 
   editJs() {
     this.tryEditJsFiles(file => {
-      const component = js.JsNode
-        .fromModuleCode(file.content())
-        .findFirstChildOfType(js.ReactClassComponent);
+      const node = js.JsNode.fromModuleCode(file.content());
+      const component = node.findFirstChildOfType(js.ReactClassComponent) ||
+        node.findFirstChildOfType(js.ReactComponent);
       const testPath = file.path().replace('.js', '.test.js');
       const hasTestFile = this.project.fileExists(testPath);
       if (component && !hasTestFile) {
-        const componentName = component.id().name;
         this.project.addFile(testPath,
 `import React from 'react';
 import ReactDOM from 'react-dom';
-import ${componentName} from './${file.name()}';
+import ${component.name} from './${file.name()}';
 
 it('renders without crashing', () => {
-const div = document.createElement('div');
-ReactDOM.render(<${componentName} />, div);
+  const div = document.createElement('div');
+  ReactDOM.render(<${component.name} />, div);
 });`);
       }
     });
