@@ -6,7 +6,7 @@ const defaults = {
   tabWidth: 2,
   useFlowParser: false,
   singleQuote: true,
-  trailingComma: true,
+  trailingComma: false,
   bracketSpacing: true
 };
 

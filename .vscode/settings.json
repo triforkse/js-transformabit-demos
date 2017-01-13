@@ -5,5 +5,12 @@
   "files.exclude": {
     "**/.git": true,
     ".atomist/build": true
-  }
+  },
+  "prettier.tabWidth": 2,
+  "prettier.printWidth": 100,
+  "prettier.formatOnSave": true,
+  "prettier.singleQuote": true,
+  "prettier.bracketSpacing": true,
+  "prettier.trailingComma": false,
+  "prettier.useFlowParser": false
 }
