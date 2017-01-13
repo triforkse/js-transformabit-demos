@@ -39,7 +39,7 @@ export class AddWebSocket extends JsProjectEditor {
       // Add handlers
       ['onOpen', 'onMessage', 'onError'].forEach(s => {
         if (!component.findMethod(s)) {
-          ctor.insertAfter(new js.MethodDefinition().build({ key: s, kind: 'method' }, []));
+          component.addMethod(<js.MethodDefinition key={s} /> as js.MethodDefinition);
         }
       });
       // Add connection
