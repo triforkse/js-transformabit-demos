@@ -1,4 +1,5 @@
 {
+  "typescript.tsdk": "./.atomist/node_modules/typescript/lib",
   "editor.tabSize": 2,
   "files.trimTrailingWhitespace": true,
   "files.insertFinalNewline": true,
