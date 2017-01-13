@@ -205,7 +205,8 @@ export class VirtualNodeFile extends NodeFileBase {
     if (this.wasModified()) {
       console.log(colors.yellow('=== ' + this.path() + ' ========================================'));
       for (const part of jsdiff.diffLines(this.initialContent(), this.modifiedContents, {
-        newlineIsToken: true
+        newlineIsToken: true,
+        ignoreWhitespace: false
       })) {
         const color = part.added ? 'green' : part.removed ? 'red' : 'grey';
         console.log(part.value[color] + '\n');
