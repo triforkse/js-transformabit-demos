@@ -17,6 +17,7 @@
   },
   "include": [
     "./.atomist/editors/**/*",
-    "./.atomist/Main.ts"
+    "./.atomist/Editors.ts",
+    "./.atomist/NodeProject.ts"
   ]
 }

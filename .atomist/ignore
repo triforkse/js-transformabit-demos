@@ -1,6 +1,8 @@
 build/
 editors_tsx/
 Demo.tsx
+Editors.ts
+Main.ts
 NodeProject.ts
 yarn.lock
 *.sh

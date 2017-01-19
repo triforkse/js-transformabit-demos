@@ -3,8 +3,12 @@ import * as path from 'path';
 import { Project, File } from '@atomist/rug/model/Core';
 import { ProjectContext } from '@atomist/rug/operations/ProjectEditor';
 
-const colors = require('colors');
-const jsdiff = require('diff');
+let colors, jsdiff;
+try {
+  // Printing will not work if any of these dependencies are missing
+  colors = require('colors');
+  jsdiff = require('diff');
+} catch (e) {}
 
 class NodeProjectBase implements Project {
   nodeName(): string {
@@ -195,14 +199,14 @@ export class VirtualNodeFile extends NodeFileBase {
   }
 
   print() {
-    if (this.wasModified()) {
+    if (colors && this.wasModified()) {
       console.log(colors.yellow('=== ' + this.path() + ' ========================================'));
       console.log(colors.cyan(this.content()));
     }
   }
 
   printDiff() {
-    if (this.wasModified()) {
+    if (colors && jsdiff && this.wasModified()) {
       console.log(colors.yellow('=== ' + this.path() + ' ========================================'));
       for (const part of jsdiff.diffLines(this.initialContent(), this.modifiedContents, {
         newlineIsToken: true,

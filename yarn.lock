@@ -6,6 +6,10 @@
   version "0.10.0"
   resolved "https://registry.yarnpkg.com/@atomist/rug/-/rug-0.10.0.tgz#ee99053e0bc9dea9c7cae1767e2b6d3d4ab48661"
 
+"@types/node@^7.0.0":
+  version "7.0.0"
+  resolved "https://registry.yarnpkg.com/@types/node/-/node-7.0.0.tgz#c081147b109da5f9c57af70571771be97ce9c0ba"
+
 js-transformabit@^0.4.0:
   version "0.4.0"
   resolved "https://registry.yarnpkg.com/js-transformabit/-/js-transformabit-0.4.0.tgz#23ea3806ddd58da8b1aa61aa2800fce1b6249992"

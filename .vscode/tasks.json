@@ -3,8 +3,6 @@
   "command": "tsc",
   "isShellCommand": true,
   "args": [
-    "-p",
-    ".atomist",
     "-w"
   ],
   "showOutput": "silent",

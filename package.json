@@ -7,9 +7,11 @@
     "demo": "cd .atomist ; npm run demo",
     "demo-watch": "cd .atomist ; npm run demo-watch"
   },
-  "main": "dist/Main.js",
   "dependencies": {
     "@atomist/rug": "^0.10.0",
     "js-transformabit": "^0.4.0"
+  },
+  "devDependencies": {
+    "@types/node": "^7.0.0"
   }
 }
