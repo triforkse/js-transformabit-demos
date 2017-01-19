@@ -7,7 +7,7 @@
     "experimentalDecorators": true,
     "reactNamespace": "JsCode"
   },
-  "include": [
+  "files": [
     "Demo.tsx"
   ]
 }

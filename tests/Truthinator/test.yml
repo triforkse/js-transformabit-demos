@@ -1,5 +1,0 @@
-bad_to_good:
-  input: "bad_comparisons.js"
-  output: "good_comparisons.js"
-  params:
-    - null

@@ -1,4 +1,5 @@
 node_modules
 /.atomist/build
+/dist
 .atomist.yml
 .ropeproject

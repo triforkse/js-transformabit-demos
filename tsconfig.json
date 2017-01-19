@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "rootDir": "./.atomist/",
+    "outDir": "./dist/",
+    "noImplicitAny": false,
+    "sourceMap": true,
+    "declaration": false,
+    "removeComments": true,
+    "experimentalDecorators": true,
+    "module": "commonjs",
+    "jsx": "react",
+    "reactNamespace": "JsCode",
+    "target": "es5",
+    "lib": [
+      "es6"
+    ]
+  },
+  "include": [
+    "./.atomist/editors/**/*"
+  ]
+}

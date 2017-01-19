@@ -1,0 +1,7 @@
+/.atomist
+/.vscode
+/node_modules
+/sample*
+makefile
+tsconfig.json
+tslint.json

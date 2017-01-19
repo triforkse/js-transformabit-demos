@@ -4,7 +4,8 @@
   "files.insertFinalNewline": true,
   "files.exclude": {
     "**/.git": true,
-    ".atomist/build": true
+    ".atomist/build": true,
+    "dist": true
   },
   "prettier.tabWidth": 2,
   "prettier.printWidth": 100,
