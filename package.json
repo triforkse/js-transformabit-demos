@@ -6,5 +6,10 @@
     "build": "cd .atomist ; npm run build",
     "demo": "cd .atomist ; npm run demo",
     "demo-watch": "cd .atomist ; npm run demo-watch"
+  },
+  "main": "dist/Main.js",
+  "dependencies": {
+    "@atomist/rug": "^0.10.0",
+    "js-transformabit": "^0.4.0"
   }
 }
