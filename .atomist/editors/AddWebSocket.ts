@@ -35,8 +35,8 @@ export class AddWebSocket extends JsProjectEditor {
             });
             const body = ctor.body();
             if (body instanceof js.BlockStatement) {
-                body.append(this.connectionInitStatement());
-                ['open', 'message', 'error'].forEach(s => body.append(this.eventConnection(s)));
+                body.append(<any>this.connectionInitStatement());
+                ['open', 'message', 'error'].forEach(s => body.append(<any>this.eventConnection(s)));
             }
             return component;
         }
