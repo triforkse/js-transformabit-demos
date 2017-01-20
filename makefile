@@ -1,5 +1,17 @@
-build:
-	npm run build
+install:
+	cd .atomist ; yarn install ; yarn run build
 
-test: build
-	npm run demo
+build:
+	cd .atomist ; yarn run build
+
+test:
+	cd .atomist ; yarn run test
+
+demo:
+	cd .atomist ; yarn run demo
+
+demo-watch:
+	cd .atomist ; yarn run demo-watch
+
+edit:
+	cd .atomist ; yarn edit $(editor) $(diff)

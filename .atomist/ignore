@@ -1,6 +1,7 @@
 build/
 editors_tsx/
 Demo.tsx
+Edit.ts
 Editors.ts
 Main.ts
 NodeProject.ts

@@ -4,6 +4,15 @@ Right now, this is a demoing sandbox for writing js-transformabit transformation
 
 ## Installation
 
-- Navigate the `js-transformabit` dir and type `npm link`
-- Back in the project dir, run `npm link js-transformabit`
-- Finally, run `npm run build` and `npm start`
+    > brew install rug-cli
+    > make install
+
+## Running an editor
+
+Running an editor with the official rug-cli
+
+    > rug edit -lt Test
+
+Running an editor in a virtual node project
+
+    > make edit editor=Test

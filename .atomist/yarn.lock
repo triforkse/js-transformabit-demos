@@ -18,7 +18,7 @@ ast-types@0.8.18:
   version "0.9.3"
   resolved "git+https://github.com/jlongster/ast-types.git#4b373d7e710105b07b22a12389ef2d8e1bcf2412"
 
-babylon@^6.15.0:
+babylon@6.15.0:
   version "6.15.0"
   resolved "https://registry.yarnpkg.com/babylon/-/babylon-6.15.0.tgz#ba65cfa1a80e1759b0e89fb562e27dccae70348e"
 
@@ -30,48 +30,48 @@ diff@^3.2.0:
   version "3.2.0"
   resolved "https://registry.yarnpkg.com/diff/-/diff-3.2.0.tgz#c9ce393a4b7cbd0b058a725c93df299027868ff9"
 
-esutils@^2.0.2:
+esutils@2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/esutils/-/esutils-2.0.2.tgz#0abf4f1caa5bcb1f7a9d8acc6dea4faaa04bac9b"
 
-flow-parser@^0.37.0:
-  version "0.37.0"
-  resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.37.0.tgz#1065c612a30f037ac3ee60053f6e797a6d9be8d6"
+flow-parser@0.38.0:
+  version "0.38.0"
+  resolved "https://registry.yarnpkg.com/flow-parser/-/flow-parser-0.38.0.tgz#a631c46170c5b42400d905a75cfc83ce8db29424"
   dependencies:
     ast-types "0.8.18"
     colors ">=0.6.2"
     minimist ">=0.2.0"
 
-get-stdin@^5.0.1:
+get-stdin@5.0.1:
   version "5.0.1"
   resolved "https://registry.yarnpkg.com/get-stdin/-/get-stdin-5.0.1.tgz#122e161591e21ff4c52530305693f20e6393a398"
 
-js-transformabit@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.yarnpkg.com/js-transformabit/-/js-transformabit-0.4.0.tgz#23ea3806ddd58da8b1aa61aa2800fce1b6249992"
+js-transformabit@^0.5.0:
+  version "0.5.0"
+  resolved "https://registry.yarnpkg.com/js-transformabit/-/js-transformabit-0.5.0.tgz#5b6863b107dd5bbe23fa42a8ac8f0a44f12d81d3"
 
-jsesc@^2.4.0:
+jsesc@2.4.0:
   version "2.4.0"
   resolved "https://registry.yarnpkg.com/jsesc/-/jsesc-2.4.0.tgz#8568d223ff69c0b5e081b4f8edf5a23d978c9867"
 
-minimist@>=0.2.0, minimist@^1.2.0:
+minimist@1.2.0, minimist@>=0.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/minimist/-/minimist-1.2.0.tgz#a35008b20f41383eec1fb914f4cd5df79a264284"
 
-prettier@0.0.8:
-  version "0.0.8"
-  resolved "https://registry.yarnpkg.com/prettier/-/prettier-0.0.8.tgz#4b5f97d68ff2a7aaf1a062d2c3f0c0adad3a247e"
+prettier@0.0.9:
+  version "0.0.9"
+  resolved "https://registry.yarnpkg.com/prettier/-/prettier-0.0.9.tgz#af32f6ad26b67365ebf2f4b48f7149dd1a21d177"
   dependencies:
     ast-types "git+https://github.com/jlongster/ast-types.git"
-    babylon "^6.15.0"
-    esutils "^2.0.2"
-    flow-parser "^0.37.0"
-    get-stdin "^5.0.1"
-    jsesc "^2.4.0"
-    minimist "^1.2.0"
-    private "^0.1.6"
+    babylon "6.15.0"
+    esutils "2.0.2"
+    flow-parser "0.38.0"
+    get-stdin "5.0.1"
+    jsesc "2.4.0"
+    minimist "1.2.0"
+    private "0.1.6"
 
-private@^0.1.6:
+private@0.1.6:
   version "0.1.6"
   resolved "https://registry.yarnpkg.com/private/-/private-0.1.6.tgz#55c6a976d0f9bafb9924851350fe47b9b5fbb7c1"
 

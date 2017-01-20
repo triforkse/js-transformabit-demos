@@ -2,12 +2,21 @@
   "compilerOptions": {
     "rootDir": ".",
     "outDir": "./build/",
-    "target": "es5",
-    "jsx": "react",
+    "noImplicitAny": false,
+    "sourceMap": true,
+    "declaration": false,
+    "removeComments": true,
     "experimentalDecorators": true,
-    "reactNamespace": "JsCode"
+    "module": "commonjs",
+    "jsx": "react",
+    "reactNamespace": "JsCode",
+    "target": "es5",
+    "lib": [
+      "es6"
+    ]
   },
-  "files": [
-    "Demo.tsx"
+  "include": [
+    "./Demo.ts",
+    "./Edit.ts"
   ]
 }

@@ -6,12 +6,13 @@
     "build": "tsc",
     "test": "rug test",
     "demo": "node ./build/Demo.js",
-    "demo-watch": "nodemon -e js ./build/Demo.js"
+    "demo-watch": "nodemon -e js ./build/Demo.js",
+    "edit": "node ./build/Edit.js"
   },
   "dependencies": {
     "@atomist/rug": "^0.10.0",
-    "js-transformabit": "^0.4.0",
-    "prettier": "0.0.8"
+    "js-transformabit": "^0.5.0",
+    "prettier": "0.0.9"
   },
   "devDependencies": {
     "@types/node": "^7.0.0",
