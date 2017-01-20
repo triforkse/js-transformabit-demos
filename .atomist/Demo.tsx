@@ -69,13 +69,13 @@ let node: GenericJsNode;
 // project.printDiff();
 
 // Demo: bind web sockets
-import { AddWebSocket } from './editors_tsx/AddWebSocket';
-const project = VirtualNodeProject.fromExistingApp('../sample_app_src');
-new AddWebSocket().edit(project, {
-  component: 'App',
-  address: 'localhost'
-});
-project.printDiff();
+// import { AddWebSocket } from './editors_tsx/AddWebSocket';
+// const project = VirtualNodeProject.fromExistingApp('../sample_app_src');
+// new AddWebSocket().edit(project, {
+//   component: 'App',
+//   address: 'localhost'
+// });
+// project.printDiff();
 
 // Demo: create unit tests
 // import { AddUnitTestForReactComponent } from './editors/AddUnitTestForReactComponent';
@@ -84,10 +84,10 @@ project.printDiff();
 // project.printDiff();
 
 // Demo: convert components
-// import { ConvertToReactComponent } from './editors/ConvertToReactComponent';
-// const project = VirtualNodeProject.fromExistingApp('../sample_app_src');
-// new ConvertToReactComponent().edit(project);
-// project.print();
+import { ConvertToReactComponent } from './editors/ConvertToReactComponent';
+const project = VirtualNodeProject.fromExistingApp('../sample_app_src');
+new ConvertToReactComponent().edit(project);
+project.print();
 
 // Demo: convert components #2
 // import { ConvertToReactClassComponent } from './editors/ConvertToReactClassComponent';

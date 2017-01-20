@@ -10,7 +10,7 @@ let editor: ProjectEditor = {
   description: 'Test',
   parameters: [],
   edit(project: Project) {
-    // project.println(JsNode.fromModuleCode('let foo = 42;').format());
+    project.println(JsNode.fromModuleCode('let foo = 42;').format());
     return new Result(Status.Success);
   }
-}
+};

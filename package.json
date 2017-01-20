@@ -12,6 +12,7 @@
     "js-transformabit": "^0.4.0"
   },
   "devDependencies": {
-    "@types/node": "^7.0.0"
+    "@types/node": "^7.0.0",
+    "typescript": "^2.1.5"
   }
 }
