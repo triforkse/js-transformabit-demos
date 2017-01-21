@@ -4,6 +4,11 @@ install:
 build:
 	cd .atomist ; yarn run build
 
+clean:
+	rm -rf dist
+	rm -rf .atomist/build
+	rm -rf .atomist/node_modules
+
 test:
 	cd .atomist ; yarn run test
 
