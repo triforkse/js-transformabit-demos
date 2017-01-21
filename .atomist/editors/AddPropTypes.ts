@@ -7,6 +7,9 @@ export class AddPropTypes extends JsProjectEditor {
     }
     editJs() {
         this.tryEditReactComponents(component => {
+            if (js.ReactComponent.check(component)) {
+                return;
+            }
             let props = {};
             component.findChildrenOfType(js.MemberExpression).forEach(memberExpression => {
                 const property = memberExpression.property();
