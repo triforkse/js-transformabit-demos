@@ -1,4 +1,4 @@
-install:
+install: clean
 	cd .atomist ; yarn install ; yarn run build
 
 build:
