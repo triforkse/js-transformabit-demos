@@ -15,3 +15,6 @@ demo-watch:
 
 edit:
 	cd .atomist ; yarn edit $(editor) $(diff)
+
+link:
+	cd .atomist ; ./link.sh
