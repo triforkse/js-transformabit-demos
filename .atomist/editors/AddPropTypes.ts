@@ -30,3 +30,4 @@ export class AddPropTypes extends JsProjectEditor {
         });
     }
 }
+const addPropTypes = new AddPropTypes();
