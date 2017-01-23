@@ -22,4 +22,5 @@ edit:
 	cd .atomist ; yarn edit $(editor) $(diff)
 
 link:
-	cd .atomist ; ./link.sh
+	rm -rf .atomist/node_modules/js-transformabit
+	cd .atomist ; yarn link js-transformabit
